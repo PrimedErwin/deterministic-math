@@ -384,15 +384,15 @@ double      trunc(double);
 #define M_SQRT2         1.41421356237309504880  /* sqrt(2) */
 #define M_SQRT1_2       0.70710678118654752440  /* 1/sqrt(2) */
 
-extern int signgam;
+// extern int signgam;
 
-double      j0(double);
-double      j1(double);
-double      jn(int, double);
+// double      j0(double);
+// double      j1(double);
+// double      jn(int, double);
 
-double      y0(double);
-double      y1(double);
-double      yn(int, double);
+// double      y0(double);
+// double      y1(double);
+// double      yn(int, double);
 
 #ifdef __cplusplus
 }

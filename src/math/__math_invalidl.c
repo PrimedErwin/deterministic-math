@@ -1,4 +1,3 @@
-#include <float.h>
 #include "math.h"
 
 #if LDBL_MANT_DIG != DBL_MANT_DIG

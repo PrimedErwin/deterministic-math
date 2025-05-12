@@ -31,3 +31,23 @@ Deleted `features.h`: platform feature defines.
 Deleted `float.h, libm.h, stdint.h`.
 
 Modified `math.h`: paste code from `float.h, libm.h, stdint.h`.
+### [Modified ./src/math](https://github.com/PrimedErwin/deterministic-math/commit/98724ef2ca8a03c80a0afd570c4b217fe95fb210): changes, deletions of math functions
+Deletion: These functions for calculation are kept. input and output are `double`.
+```
+acos, asin, atan, atan2, ceil, cos, exp, fabs, floor, fmod, 
+log, log10, log2, modf, pow, scalbn, sin, sqrt, tan, trunc
+```
+Internal functions like `__cos.c`, error handling functions like `__math_invalid.c` are kept.
+
+Addition: functions for degree computation, reduction, factorial, gcd. 
+```
+double degrees(double);
+int    factorial(int);
+double fsum(double*, int);
+int    gcd(int, int);
+double radians(double);
+```
+
+Modification: all files' include headers are changed. 
+Files like `cos.c` including `libm.h` are changed to `math.h`.
+Files like `__fpclassify.c` including `math.h, stdint.h` are changed to `math.h`.

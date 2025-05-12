@@ -12,3 +12,16 @@ Modified ./include: only kept `float.h, math.h, stdint.h`, which are related to 
 Modified ./src: only kept folders related by `math.h`. `./src/include/features.h` is included by `math.h`, kept. `./src/internal/libm.h` is included by many math functions, kept. `./src/math`, kept. 
 
 !! Deleted ./src/math/(some platform) folders: some functions (especially sqrt) have the corresponding assembly instruction on different platforms. These folders are deleted to make sure that all the functions are implemented by ourselves.
+### [gather files](https://github.com/PrimedErwin/deterministic-math/commit/afa45a78c17b8a86d1a86f90bff9920d93849d34): Put files together. 
+After deletion, I put the rest files like this:
+```
+./include
+    | -- features.h
+    | -- float.h
+    | -- libm.h
+    | -- math.h
+    | -- stdint.h
+./src
+    | -- math
+           | -- math function files
+```

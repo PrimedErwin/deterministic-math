@@ -5,19 +5,11 @@
 extern "C" {
 #endif
 
-#include <features.h>
-
 #define __NEED_float_t
 #define __NEED_double_t
-#include <bits/alltypes.h>
 
-#if 100*__GNUC__+__GNUC_MINOR__ >= 303
-#define NAN       __builtin_nanf("")
-#define INFINITY  __builtin_inff()
-#else
 #define NAN       (0.0f/0.0f)
 #define INFINITY  1e5000f
-#endif
 
 #define HUGE_VALF INFINITY
 #define HUGE_VAL  ((double)INFINITY)
@@ -47,6 +39,32 @@ extern "C" {
 #ifdef __FP_FAST_FMAL
 #define FP_FAST_FMAL 1
 #endif
+
+/* Support non-nearest rounding mode.  */
+#define WANT_ROUNDING 1
+/* Support signaling NaNs.  */
+#define WANT_SNAN 0
+
+#if WANT_SNAN
+#error SNaN is unsupported
+#else
+#define issignalingf_inline(x) 0
+#define issignaling_inline(x) 0
+#endif
+
+#define predict_true(x) (x)
+#define predict_false(x) (x)
+
+typedef signed char        int8_t;
+typedef short              int16_t;
+typedef int                int32_t;
+typedef long long          int64_t;
+typedef unsigned char      uint8_t;
+typedef unsigned short     uint16_t;
+typedef unsigned int       uint32_t;
+typedef unsigned long long uint64_t;
+typedef float  float_t;
+typedef double double_t;
 
 int __fpclassify(double);
 int __fpclassifyf(float);
@@ -132,241 +150,226 @@ __ISREL_DEF(greaterequall, >=, long double)
 #define isgreater(x, y)         __tg_pred_2(x, y, __isgreater)
 #define isgreaterequal(x, y)    __tg_pred_2(x, y, __isgreaterequal)
 
-double      acos(double);
-float       acosf(float);
-long double acosl(long double);
+/* Evaluate an expression as the specified type. With standard excess
+   precision handling a type cast or assignment is enough (with
+   -ffloat-store an assignment is required, in old compilers argument
+   passing and return statement may not drop excess precision).  */
 
-double      acosh(double);
-float       acoshf(float);
-long double acoshl(long double);
+static inline float eval_as_float(float x)
+{
+	float y = x;
+	return y;
+}
 
-double      asin(double);
-float       asinf(float);
-long double asinl(long double);
+static inline double eval_as_double(double x)
+{
+	double y = x;
+	return y;
+}
 
-double      asinh(double);
-float       asinhf(float);
-long double asinhl(long double);
+/* fp_barrier returns its input, but limits code transformations
+	as if it had a side-effect (e.g. observable io) and returned
+	an arbitrary value.  */
 
-double      atan(double);
-float       atanf(float);
-long double atanl(long double);
-
-double      atan2(double, double);
-float       atan2f(float, float);
-long double atan2l(long double, long double);
-
-double      atanh(double);
-float       atanhf(float);
-long double atanhl(long double);
-
-double      cbrt(double);
-float       cbrtf(float);
-long double cbrtl(long double);
-
-double      ceil(double);
-float       ceilf(float);
-long double ceill(long double);
-
-double      copysign(double, double);
-float       copysignf(float, float);
-long double copysignl(long double, long double);
-
-double      cos(double);
-float       cosf(float);
-long double cosl(long double);
-
-double      cosh(double);
-float       coshf(float);
-long double coshl(long double);
-
-double      erf(double);
-float       erff(float);
-long double erfl(long double);
-
-double      erfc(double);
-float       erfcf(float);
-long double erfcl(long double);
-
-double      exp(double);
-float       expf(float);
-long double expl(long double);
-
-double      exp2(double);
-float       exp2f(float);
-long double exp2l(long double);
-
-double      expm1(double);
-float       expm1f(float);
-long double expm1l(long double);
-
-double      fabs(double);
-float       fabsf(float);
-long double fabsl(long double);
-
-double      fdim(double, double);
-float       fdimf(float, float);
-long double fdiml(long double, long double);
-
-double      floor(double);
-float       floorf(float);
-long double floorl(long double);
-
-double      fma(double, double, double);
-float       fmaf(float, float, float);
-long double fmal(long double, long double, long double);
-
-double      fmax(double, double);
-float       fmaxf(float, float);
-long double fmaxl(long double, long double);
-
-double      fmin(double, double);
-float       fminf(float, float);
-long double fminl(long double, long double);
-
-double      fmod(double, double);
-float       fmodf(float, float);
-long double fmodl(long double, long double);
-
-double      frexp(double, int *);
-float       frexpf(float, int *);
-long double frexpl(long double, int *);
-
-double      hypot(double, double);
-float       hypotf(float, float);
-long double hypotl(long double, long double);
-
-int         ilogb(double);
-int         ilogbf(float);
-int         ilogbl(long double);
-
-double      ldexp(double, int);
-float       ldexpf(float, int);
-long double ldexpl(long double, int);
-
-double      lgamma(double);
-float       lgammaf(float);
-long double lgammal(long double);
-
-long long   llrint(double);
-long long   llrintf(float);
-long long   llrintl(long double);
-
-long long   llround(double);
-long long   llroundf(float);
-long long   llroundl(long double);
-
-double      log(double);
-float       logf(float);
-long double logl(long double);
-
-double      log10(double);
-float       log10f(float);
-long double log10l(long double);
-
-double      log1p(double);
-float       log1pf(float);
-long double log1pl(long double);
-
-double      log2(double);
-float       log2f(float);
-long double log2l(long double);
-
-double      logb(double);
-float       logbf(float);
-long double logbl(long double);
-
-long        lrint(double);
-long        lrintf(float);
-long        lrintl(long double);
-
-long        lround(double);
-long        lroundf(float);
-long        lroundl(long double);
-
-double      modf(double, double *);
-float       modff(float, float *);
-long double modfl(long double, long double *);
-
-double      nan(const char *);
-float       nanf(const char *);
-long double nanl(const char *);
-
-double      nearbyint(double);
-float       nearbyintf(float);
-long double nearbyintl(long double);
-
-double      nextafter(double, double);
-float       nextafterf(float, float);
-long double nextafterl(long double, long double);
-
-double      nexttoward(double, long double);
-float       nexttowardf(float, long double);
-long double nexttowardl(long double, long double);
-
-double      pow(double, double);
-float       powf(float, float);
-long double powl(long double, long double);
-
-double      remainder(double, double);
-float       remainderf(float, float);
-long double remainderl(long double, long double);
-
-double      remquo(double, double, int *);
-float       remquof(float, float, int *);
-long double remquol(long double, long double, int *);
-
-double      rint(double);
-float       rintf(float);
-long double rintl(long double);
-
-double      round(double);
-float       roundf(float);
-long double roundl(long double);
-
-double      scalbln(double, long);
-float       scalblnf(float, long);
-long double scalblnl(long double, long);
-
-double      scalbn(double, int);
-float       scalbnf(float, int);
-long double scalbnl(long double, int);
-
-double      sin(double);
-float       sinf(float);
-long double sinl(long double);
-
-double      sinh(double);
-float       sinhf(float);
-long double sinhl(long double);
-
-double      sqrt(double);
-float       sqrtf(float);
-long double sqrtl(long double);
-
-double      tan(double);
-float       tanf(float);
-long double tanl(long double);
-
-double      tanh(double);
-float       tanhf(float);
-long double tanhl(long double);
-
-double      tgamma(double);
-float       tgammaf(float);
-long double tgammal(long double);
-
-double      trunc(double);
-float       truncf(float);
-long double truncl(long double);
-
-
-#if defined(_XOPEN_SOURCE) || defined(_BSD_SOURCE)
-#undef  MAXFLOAT
-#define MAXFLOAT        3.40282346638528859812e+38F
+#ifndef fp_barrierf
+#define fp_barrierf fp_barrierf
+static inline float fp_barrierf(float x)
+{
+	volatile float y = x;
+	return y;
+}
 #endif
 
-#if defined(_XOPEN_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+#ifndef fp_barrier
+#define fp_barrier fp_barrier
+static inline double fp_barrier(double x)
+{
+	volatile double y = x;
+	return y;
+}
+#endif
+
+#ifndef fp_barrierl
+#define fp_barrierl fp_barrierl
+static inline long double fp_barrierl(long double x)
+{
+	volatile long double y = x;
+	return y;
+}
+#endif
+
+/* fp_force_eval ensures that the input value is computed when that's
+	otherwise unused.  To prevent the constant folding of the input
+	expression, an additional fp_barrier may be needed or a compilation
+	mode that does so (e.g. -frounding-math in gcc). Then it can be
+	used to evaluate an expression for its fenv side-effects only.   */
+
+#ifndef fp_force_evalf
+#define fp_force_evalf fp_force_evalf
+static inline void fp_force_evalf(float x)
+{
+	volatile float y;
+	y = x;
+}
+#endif
+
+#ifndef fp_force_eval
+#define fp_force_eval fp_force_eval
+static inline void fp_force_eval(double x)
+{
+	volatile double y;
+	y = x;
+}
+#endif
+
+#ifndef fp_force_evall
+#define fp_force_evall fp_force_evall
+static inline void fp_force_evall(long double x)
+{
+	volatile long double y;
+	y = x;
+}
+#endif
+
+#define FORCE_EVAL(x) do {                        \
+	if (sizeof(x) == sizeof(float)) {         \
+		fp_force_evalf(x);                \
+	} else if (sizeof(x) == sizeof(double)) { \
+		fp_force_eval(x);                 \
+	} else {                                  \
+		fp_force_evall(x);                \
+	}                                         \
+} while(0)
+
+#define asuint(f) ((union{float _f; uint32_t _i;}){f})._i
+#define asfloat(i) ((union{uint32_t _i; float _f;}){i})._f
+#define asuint64(f) ((union{double _f; uint64_t _i;}){f})._i
+#define asdouble(i) ((union{uint64_t _i; double _f;}){i})._f
+
+#define EXTRACT_WORDS(hi,lo,d)                    \
+do {                                              \
+	uint64_t __u = asuint64(d);                     \
+	(hi) = __u >> 32;                               \
+	(lo) = (uint32_t)__u;                           \
+} while (0)
+
+#define GET_HIGH_WORD(hi,d)                       \
+do {                                              \
+	(hi) = asuint64(d) >> 32;                       \
+} while (0)
+
+#define GET_LOW_WORD(lo,d)                        \
+do {                                              \
+	(lo) = (uint32_t)asuint64(d);                   \
+} while (0)
+
+#define INSERT_WORDS(d,hi,lo)                     \
+do {                                              \
+	(d) = asdouble(((uint64_t)(hi)<<32) | (uint32_t)(lo)); \
+} while (0)
+
+#define SET_HIGH_WORD(d,hi)                       \
+	INSERT_WORDS(d, hi, (uint32_t)asuint64(d))
+
+#define SET_LOW_WORD(d,lo)                        \
+	INSERT_WORDS(d, asuint64(d)>>32, lo)
+
+#define GET_FLOAT_WORD(w,d)                       \
+do {                                              \
+	(w) = asuint(d);                                \
+} while (0)
+
+#define SET_FLOAT_WORD(d,w)                       \
+do {                                              \
+	(d) = asfloat(w);                               \
+} while (0)
+   
+int    __rem_pio2_large(double*, double*, int, int, int);
+int    __rem_pio2(double, double*);
+double __sin(double, double, int);
+double __cos(double, double);
+double __tan(double, double, int);
+
+/* error handling functions */
+float __math_xflowf(uint32_t, float);
+float __math_uflowf(uint32_t);
+float __math_oflowf(uint32_t);
+float __math_divzerof(uint32_t);
+float __math_invalidf(float);
+double __math_xflow(uint32_t, double);
+double __math_uflow(uint32_t);
+double __math_oflow(uint32_t);
+double __math_divzero(uint32_t);
+double __math_invalid(double);
+#if LDBL_MANT_DIG != DBL_MANT_DIG
+long double __math_invalidl(long double);
+#endif
+
+double      acos(double);
+double      asin(double);
+double      atan(double);
+double      atan2(double, double);
+double      ceil(double);
+double      cos(double);
+double		degrees(double);
+double      exp(double);
+double      fabs(double);
+int			factorial(int);
+double      floor(double);
+double      fmod(double, double);
+double		fsum(double*, int);
+int			gcd(int, int);
+double      log(double);
+double      log10(double);
+double      log2(double);
+double      modf(double, double *);
+double      pow(double, double);
+double		radians(double);
+double      scalbn(double, int);
+double      sin(double);
+double      sqrt(double);
+double      tan(double);
+double      trunc(double);
+
+#define FLT_TRUE_MIN 1.40129846432481707092e-45F
+#define FLT_MIN 1.17549435082228750797e-38F
+#define FLT_MAX 3.40282346638528859812e+38F
+#define FLT_EPSILON 1.1920928955078125e-07F
+
+#define FLT_MANT_DIG 24
+#define FLT_MIN_EXP (-125)
+#define FLT_MAX_EXP 128
+#define FLT_HAS_SUBNORM 1
+
+#define FLT_DIG 6
+#define FLT_DECIMAL_DIG 9
+#define FLT_MIN_10_EXP (-37)
+#define FLT_MAX_10_EXP 38
+
+#define DBL_TRUE_MIN 4.94065645841246544177e-324
+#define DBL_MIN 2.22507385850720138309e-308
+#define DBL_MAX 1.79769313486231570815e+308
+#define DBL_EPSILON 2.22044604925031308085e-16
+
+#define DBL_MANT_DIG 53
+#define DBL_MIN_EXP (-1021)
+#define DBL_MAX_EXP 1024
+#define DBL_HAS_SUBNORM 1
+
+#define DBL_DIG 15
+#define DBL_DECIMAL_DIG 17
+#define DBL_MIN_10_EXP (-307)
+#define DBL_MAX_10_EXP 308
+
+#define LDBL_HAS_SUBNORM 1
+#define LDBL_DECIMAL_DIG DBL_DECIMAL_DIG
+#define LDBL_MANT_DIG    DBL_MANT_DIG            
+#define LDBL_MAX_EXP     DBL_MAX_EXP             
+
+#undef  MAXFLOAT
+#define MAXFLOAT        3.40282346638528859812e+38F
+#define HUGE            3.40282346638528859812e+38F
+
 #define M_E             2.7182818284590452354   /* e */
 #define M_LOG2E         1.4426950408889634074   /* log_2 e */
 #define M_LOG10E        0.43429448190325182765  /* log_10 e */
@@ -390,50 +393,6 @@ double      jn(int, double);
 double      y0(double);
 double      y1(double);
 double      yn(int, double);
-#endif
-
-#if defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
-#define HUGE            3.40282346638528859812e+38F
-
-double      drem(double, double);
-float       dremf(float, float);
-
-int         finite(double);
-int         finitef(float);
-
-double      scalb(double, double);
-float       scalbf(float, float);
-
-double      significand(double);
-float       significandf(float);
-
-double      lgamma_r(double, int*);
-float       lgammaf_r(float, int*);
-
-float       j0f(float);
-float       j1f(float);
-float       jnf(int, float);
-
-float       y0f(float);
-float       y1f(float);
-float       ynf(int, float);
-#endif
-
-#ifdef _GNU_SOURCE
-long double lgammal_r(long double, int*);
-
-void        sincos(double, double*, double*);
-void        sincosf(float, float*, float*);
-void        sincosl(long double, long double*, long double*);
-
-double      exp10(double);
-float       exp10f(float);
-long double exp10l(long double);
-
-double      pow10(double);
-float       pow10f(float);
-long double pow10l(long double);
-#endif
 
 #ifdef __cplusplus
 }

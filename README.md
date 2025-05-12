@@ -6,6 +6,9 @@ This is a experimental math lib based on [musl libc](https://musl.libc.org/), ai
 ### [keepping math only](https://github.com/PrimedErwin/deterministic-math/commit/00146e092a89ddc9d3afb56438dee311981978af): Deleted most of the code.
 Deleted ./arch: code for different platforms, file like `fp_arch.h` and `float.h` defines behavior for specific platforms. 
 Deleted ./compat, ./crt, ./dist, ./ldso, ./tools: not related with math. 
+
 Modified ./include: only kept `float.h, math.h, stdint.h`, which are related to math. 
+
 Modified ./src: only kept folders related by `math.h`. `./src/include/features.h` is included by `math.h`, kept. `./src/internal/libm.h` is included by many math functions, kept. `./src/math`, kept. 
+
 !! Deleted ./src/math/(some platform) folders: some functions (especially sqrt) have the corresponding assembly instruction on different platforms. These folders are deleted to make sure that all the functions are implemented by ourselves.

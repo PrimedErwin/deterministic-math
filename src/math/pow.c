@@ -6,8 +6,6 @@
  */
 
 #include <math.h>
-#include <stdint.h>
-#include "libm.h"
 #include "exp_data.h"
 #include "pow_data.h"
 

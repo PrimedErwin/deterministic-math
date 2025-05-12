@@ -6,8 +6,6 @@
  */
 
 #include <math.h>
-#include <stdint.h>
-#include "libm.h"
 #include "log_data.h"
 
 #define T __log_data.tab

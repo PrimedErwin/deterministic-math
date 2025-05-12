@@ -1,6 +1,4 @@
-#include <stdint.h>
 #include <math.h>
-#include "libm.h"
 #include "sqrt_data.h"
 
 #define FENV_SUPPORT 1

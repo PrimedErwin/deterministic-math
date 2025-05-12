@@ -370,6 +370,7 @@ double      trunc(double);
 #define MAXFLOAT        3.40282346638528859812e+38F
 #define HUGE            3.40282346638528859812e+38F
 
+#define M_DEG2RAD			0.017453292519943295	/* pi/180 */
 #define M_E             2.7182818284590452354   /* e */
 #define M_LOG2E         1.4426950408889634074   /* log_2 e */
 #define M_LOG10E        0.43429448190325182765  /* log_10 e */
@@ -380,6 +381,7 @@ double      trunc(double);
 #define M_PI_4          0.78539816339744830962  /* pi/4 */
 #define M_1_PI          0.31830988618379067154  /* 1/pi */
 #define M_2_PI          0.63661977236758134308  /* 2/pi */
+#define M_RAD2DEG		57.29577951308232		/* 180/pi */
 #define M_2_SQRTPI      1.12837916709551257390  /* 2/sqrt(pi) */
 #define M_SQRT2         1.41421356237309504880  /* sqrt(2) */
 #define M_SQRT1_2       0.70710678118654752440  /* 1/sqrt(2) */

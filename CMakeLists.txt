@@ -14,7 +14,7 @@ file(GLOB_RECURSE SOURCES
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /fp:strict /Od)
+    target_compile_options(${PROJECT_NAME} PRIVATE /fp:precise /Od)
     message("MSVC set")
 elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE -ffp-model=strict)

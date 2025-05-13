@@ -40,6 +40,8 @@ extern "C" {
 #define FP_FAST_FMAL 1
 #endif
 
+#define FLT_EVAL_METHOD 0
+
 /* Support non-nearest rounding mode.  */
 #define WANT_ROUNDING 1
 /* Support signaling NaNs.  */
@@ -370,7 +372,7 @@ double      trunc(double);
 #define MAXFLOAT        3.40282346638528859812e+38F
 #define HUGE            3.40282346638528859812e+38F
 
-#define M_DEG2RAD			0.017453292519943295	/* pi/180 */
+#define M_DEG2RAD		0.017453292519943295	/* pi/180 */
 #define M_E             2.7182818284590452354   /* e */
 #define M_LOG2E         1.4426950408889634074   /* log_2 e */
 #define M_LOG10E        0.43429448190325182765  /* log_10 e */

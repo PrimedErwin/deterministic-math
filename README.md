@@ -51,3 +51,18 @@ double radians(double);
 Modification: all files' include headers are changed. 
 Files like `cos.c` including `libm.h` are changed to `math.h`.
 Files like `__fpclassify.c` including `math.h, stdint.h` are changed to `math.h`.
+
+## Test
+Simple tests with `determinism_test.c`. Tested on Windows11, 22H2, x64_64, AMD Ryzen Threadripper 3990X. 
+
+**Cumulative error** is found in the test. A small number equal to DBL_EPSILON is produced during the computation. 
+For example, sqrt(2), the result of pow(sqrt(2), 2) is 2.0+2*DBL_EPSILON. The same phenomenon is found on the following compilers. 
+### Clang 20.1.4
+No problem.
+### GNU 14.2.0
+No problem.
+### MSVC 19.29.30154
+/fp:strict will get C2099 and C2177, /fp:precise will get C2177.
+C2099: defines should be constant, #ifdef .. #define VALUE 10 #elif .. is not allowed.
+C2177: INFINITY in this repo is 1e5000f, which is too big, this is not allowed.
+Try other values to replace INFINITY in test case to make the test run.

@@ -54,5 +54,4 @@ dkms.conf
 .vs
 .vscode
 build/
-NotSrc
 out

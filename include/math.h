@@ -8,12 +8,15 @@ extern "C" {
 #define __NEED_float_t
 #define __NEED_double_t
 
-#define NAN       (0.0f/0.0f)
-#define INFINITY  1e5000f
+#ifndef _HUGE_ENUF
+    #define _HUGE_ENUF  1e+300  // _HUGE_ENUF*_HUGE_ENUF must overflow
+#endif
 
+#define INFINITY   ((float)(_HUGE_ENUF * _HUGE_ENUF))
 #define HUGE_VALF INFINITY
 #define HUGE_VAL  ((double)INFINITY)
 #define HUGE_VALL ((long double)INFINITY)
+#define NAN        ((float)(INFINITY * 0.0F))
 
 #define MATH_ERRNO  1
 #define MATH_ERREXCEPT 2
@@ -311,6 +314,7 @@ double      acos(double);
 double      asin(double);
 double      atan(double);
 double      atan2(double, double);
+double      cbrt(double);
 double      ceil(double);
 double      cos(double);
 double		degrees(double);
@@ -318,6 +322,8 @@ double      exp(double);
 double      fabs(double);
 int			factorial(int);
 double      floor(double);
+double      fmax(double, double);
+double      fmin(double, double);
 double      fmod(double, double);
 double		fsum(double*, int);
 int			gcd(int, int);

@@ -83,6 +83,7 @@ int main()
                 break;
             }
             assert(issame(result, ref_ans[i]));
+            if(i==CASES_COUNT-1) printf("%.18f\n", result);
         }
     }
     return 0;

@@ -40,6 +40,8 @@ jobs:
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Run
+      run: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test
 
   build_ubuntu_multiarch:
     runs-on: ubuntu-22.04
@@ -92,6 +94,8 @@ jobs:
     - name: Build
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Run
+      run: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test
 
 
   build_macos:
@@ -151,4 +155,4 @@ jobs:
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
-      run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test.exe
+      run: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test.exe

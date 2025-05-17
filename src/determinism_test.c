@@ -1,8 +1,11 @@
 #include <math.h>
 #include <stdio.h>
 #include <assert.h>
-#include <malloc.h>
-
+#ifndef __APPLE__
+    #include <malloc.h>
+#else
+    #include <sys/malloc.h>
+#endif
 #include "cases.h"
 
 #define TEST_TIME 5

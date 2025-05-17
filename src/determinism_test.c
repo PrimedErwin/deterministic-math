@@ -86,7 +86,7 @@ int main()
                 break;
             }
             assert(issame(result, ref_ans[i]));
-            if(i==CASES_COUNT-1) printf("%.18f\n", result);
+            if(i==CASES_COUNT-1) printf("run %d: %.18f\n",test_time, result);
         }
     }
     return 0;

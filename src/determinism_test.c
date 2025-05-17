@@ -4,7 +4,7 @@
 #ifndef __APPLE__
     #include <malloc.h>
 #else
-    #include <sys/malloc.h>
+    #include <stdlib.h>
 #endif
 #include "cases.h"
 

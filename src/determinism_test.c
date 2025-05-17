@@ -8,9 +8,6 @@
 #define TEST_TIME 5
 #define issame(a, b) (a==b) || (isnan(a) && isnan(b))
 
-const static double nan = 0.0 / 0.0;
-const static double inf = 1.0 / 0.0;
-
 static double sum(double* iterable, int len)
 {
     double res = 0;

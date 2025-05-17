@@ -16,6 +16,11 @@ jobs:
         build_type: [Release]
         c_compiler: [clang, gcc]
         cpp_compiler: [clang++, g++]
+        include:
+          - c_compiler: clang
+            cpp_compiler: clang++
+          - c_compiler: gcc
+            cpp_compiler: g++
     steps:
     - uses: actions/checkout@v4
     - name: Set reusable strings
@@ -46,6 +51,25 @@ jobs:
         arch: [x86, aarch64, armv7]
         c_compiler: [clang, gcc]
         cpp_compiler: [clang++, g++]
+        include:
+          - arch: x86
+            c_compiler: clang
+            cpp_compiler: clang++
+          - arch: x86
+            c_compiler: gcc
+            cpp_compiler: g++
+          - arch: aarch64
+            c_compiler: clang
+            cpp_compiler: clang++
+          - arch: aarch64
+            c_compiler: gcc
+            cpp_compiler: g++
+          - arch: armv7
+            c_compiler: clang
+            cpp_compiler: clang++
+          - arch: armv7
+            c_compiler: gcc
+            cpp_compiler: g++
     steps:
     - uses: actions/checkout@v4
     - name: Setup Alpine Linux for ${{ matrix.arch }}

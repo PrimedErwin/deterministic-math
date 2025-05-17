@@ -128,8 +128,8 @@ jobs:
     strategy:
       matrix:
         build_type: [Release]
-        c_compiler: [clang]
-        cpp_compiler: [clang++]
+        c_compiler: [cl]
+        cpp_compiler: [cl]
     steps:
     - uses: actions/checkout@v4
     - name: Set reusable strings
@@ -151,4 +151,4 @@ jobs:
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
-      run: echo "byebye"
+      run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test.exe

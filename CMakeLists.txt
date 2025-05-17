@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 
-set(CMAKE_C_COMPILER "clang")
-set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "g++")
 
 project("determinism_test")
 
@@ -20,5 +20,6 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE -ffp-model=strict)
     message("CLANG set")
 elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${PROJECT_NAME} PRIVATE -O2 -fexcess-precision=standard -ffp-contract=off)
     message("gcc set")
 endif()   

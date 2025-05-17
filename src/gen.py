@@ -60,15 +60,16 @@ for i in range(100000):
 
 # to C struct
 with open('cases.c', 'w') as f:
+    f.write('#include "cases.h"\n')
     f.write('const static double nan = 0.0 / 0.0;\n')
     f.write('const static double inf = 1.0 / 0.0;\n')
     f.write('\n')
     f.write('\n')
-    f.write('struct Case {\n')
-    f.write('    double a;\n')
-    f.write('    double b;\n')
-    f.write('    char op;\n')
-    f.write('};\n')
+    # f.write('struct Case {\n')
+    # f.write('    double a;\n')
+    # f.write('    double b;\n')
+    # f.write('    char op;\n')
+    # f.write('};\n')
     f.write('\n')
     f.write('struct Case cases[] = {\n')
     for case in cases:

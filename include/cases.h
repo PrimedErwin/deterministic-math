@@ -7,6 +7,6 @@ extern struct Case{
     char op;
 } cases[];
 
-extern const int CASES_COUNT = 100000;
+extern const int CASES_COUNT;
 
 #endif

@@ -192,7 +192,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: "Create output directory"
-        run: "mkdir $GITHUB_WORKSPACE/output/all-in-one"
+        run: |
+          mkdir $GITHUB_WORKSPACE/output
+          mkdir $GITHUB_WORKSPACE/output/all-in-one
 
       - name: "Merge win32"
         uses: actions/download-artifact@v4.1.7

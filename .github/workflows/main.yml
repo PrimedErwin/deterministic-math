@@ -46,6 +46,7 @@ jobs:
         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
         cd ${{ github.workspace }}
         ls
+        echo "files in build:"
         cd build
         ls
         cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/linux_x64

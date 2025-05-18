@@ -193,77 +193,77 @@ jobs:
       - uses: actions/checkout@v4
       - name: "Create output directory"
         run: |
-          mkdir $GITHUB_WORKSPACE/output
-          mkdir $GITHUB_WORKSPACE/output/all-in-one
+          mkdir output
+          mkdir output/all-in-one
 
       - name: "Merge win32"
         uses: actions/download-artifact@v4.1.7
         with:
           name: win32_cl
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge macos"
         uses: actions/download-artifact@v4.1.7
         with:
           name: macos_clang
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_x64_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x64_clang
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_x64_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x64_gcc
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_x86_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x86_gcc
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_aarch64_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_aarch64_gcc
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_armv7_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_armv7_gcc
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_x86_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x86_clang
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_aarch64_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_aarch64_clang
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Merge linux_armv7_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_armv7_clang
-          path: $GITHUB_WORKSPACE/output/all-in-one
+          path: ${{ github.workspace }}/output/all-in-one
 
       - name: "Compare artifacts"
         run: |
           pip install pandas
-          python scripts/all-in-one.py $GITHUB_WORKSPACE/output
+          python scripts/all-in-one.py ${{ github.workspace }}/output
       
       - name: "Upload merged artifact"
         uses: actions/upload-artifact@v4.3.3
         with:
           name: all-in-one
-          path: $GITHUB_WORKSPACE/output
+          path: ${{ github.workspace }}/output
 

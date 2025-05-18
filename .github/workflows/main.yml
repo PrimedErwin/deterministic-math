@@ -44,12 +44,7 @@ jobs:
       run: |
         mkdir -p output/linux_x64
         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-        cd ${{ github.workspace }}
-        ls
-        echo "files in build:"
-        cd build
-        ls
-        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/linux_x64
+        cp ${{ github.workspace }}/case_result.txt output/linux_x64
     - uses: actions/upload-artifact@v4
       with:
         name: linux_x64
@@ -112,7 +107,7 @@ jobs:
       run: |
         mkdir -p output/linux_${{ matrix.arch }}
         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/linux_${{ matrix.arch }}
+        cp ${{ github.workspace }}/case_result.txt output/linux_${{ matrix.arch }}
     - uses: actions/upload-artifact@v4
       with:
         name: linux_${{ matrix.arch }}
@@ -149,7 +144,7 @@ jobs:
       run: |
         mkdir -p output/macos
         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/macos
+        cp ${{ github.workspace }}/case_result.txt output/macos
     - uses: actions/upload-artifact@v4
       with:
         name: macos
@@ -186,8 +181,47 @@ jobs:
       run: |
         mkdir -p output/win32
         ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test.exe
-        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/win32
+        cp ${{ github.workspace }}/case_result.txt output/win32
     - uses: actions/upload-artifact@v4
       with:
         name: win32
         path: output
+  merge:
+    runs-on: ubuntu-22.04
+    needs: [build_ubuntu, build_ubuntu_multiarch, build_macos, build_win32]
+    strategy:
+      matrix:
+        arch: [x86, aarch64, armv7]
+    steps:
+      - name: "Create output directory"
+        run: "mkdir $GITHUB_WORKSPACE/output"
+
+      - name: "Merge win32"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: win32
+          path: $GITHUB_WORKSPACE/output/win32
+
+      - name: "Merge macos"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: macos
+          path: $GITHUB_WORKSPACE/output/macos
+
+      - name: "Merge linux_x64"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_x64
+          path: $GITHUB_WORKSPACE/output/linux_x64
+
+      - name: "Merge linux_${{ matrix.arch }}"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_${{ matrix.arch }}
+          path: $GITHUB_WORKSPACE/output/linux_${{ matrix.arch }}
+      
+      - name: "Upload merged artifact"
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: all-in-one
+          path: $GITHUB_WORKSPACE/output

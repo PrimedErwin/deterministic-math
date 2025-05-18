@@ -189,13 +189,12 @@ jobs:
   merge:
     runs-on: ubuntu-22.04
     needs: [build_ubuntu, build_ubuntu_multiarch, build_macos, build_win32]
-    strategy:
-      matrix:
-        arch: [x86, aarch64, armv7]
-        win32_c_compiler: [cl]
-        macos_c_compiler: [clang]
-        linux_x64_c_compiler: [clang, gcc]
-        linux_multiarch_c_compiler: [clang, gcc]
+    matrix:
+      arch: [x86, aarch64, armv7]
+      win32_c_compiler: [cl]
+      macos_c_compiler: [clang]
+      linux_x64_c_compiler: [clang, gcc]
+      linux_multiarch_c_compiler: [clang, gcc]
     steps:
       - name: "Create output directory"
         run: "mkdir $GITHUB_WORKSPACE/output"

@@ -1,5 +1,5 @@
-# # This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
-# # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
 name: CMake on multiple platforms
 
 on:
@@ -9,261 +9,258 @@ on:
     branches: [ "main" ]
 
 jobs:
-#   build_ubuntu:
-#     runs-on: ubuntu-22.04
-#     strategy:
-#       matrix:
-#         build_type: [Release]
-#         c_compiler: [clang, gcc]
-#         include:
-#           - c_compiler: clang
-#             cpp_compiler: clang++
-#           - c_compiler: gcc
-#             cpp_compiler: g++
-#     steps:
-#     - uses: actions/checkout@v4
-#     - name: Set reusable strings
-#       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
-#       id: strings
-#       shell: bash
-#       run: |
-#         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-#     - name: Configure CMake
-#       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-#       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-#       run: >
-#         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-#         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-#         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-#         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-#         -S ${{ github.workspace }}
-#     - name: Build
-#       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-#       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
-#     - name: Run
-#       run: |
-#         mkdir -p output/linux_x64_${{ matrix.c_compiler }}
-#         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-#         cp ${{ github.workspace }}/case_result.txt output/linux_x64_${{ matrix.c_compiler }}
-#     - uses: actions/upload-artifact@v4
-#       with:
-#         name: linux_x64_${{ matrix.c_compiler }}
-#         path: output
+  build_ubuntu:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        build_type: [Release]
+        c_compiler: [clang, gcc]
+        include:
+          - c_compiler: clang
+            cpp_compiler: clang++
+          - c_compiler: gcc
+            cpp_compiler: g++
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Run
+      run: |
+        mkdir -p output/linux_x64_${{ matrix.c_compiler }}
+        ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+        cp ${{ github.workspace }}/case_result.txt output/linux_x64_${{ matrix.c_compiler }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux_x64_${{ matrix.c_compiler }}
+        path: output
 
-#   build_ubuntu_multiarch:
-#     runs-on: ubuntu-22.04
-#     strategy:
-#       matrix:
-#         build_type: [Release]
-#         arch: [x86, aarch64, armv7]
-#         c_compiler: [clang, gcc]
-#         include:
-#           - arch: x86
-#             c_compiler: clang
-#             cpp_compiler: clang++
-#           - arch: x86
-#             c_compiler: gcc
-#             cpp_compiler: g++
-#           - arch: aarch64
-#             c_compiler: clang
-#             cpp_compiler: clang++
-#           - arch: aarch64
-#             c_compiler: gcc
-#             cpp_compiler: g++
-#           - arch: armv7
-#             c_compiler: clang
-#             cpp_compiler: clang++
-#           - arch: armv7
-#             c_compiler: gcc
-#             cpp_compiler: g++
-#     steps:
-#     - uses: actions/checkout@v4
-#     - name: Setup Alpine Linux for ${{ matrix.arch }}
-#       uses: jirutka/setup-alpine@v1
-#       with:
-#         arch: ${{ matrix.arch }}
-#         packages: gcc g++ make cmake libc-dev linux-headers python3
-#     - name: Set reusable strings
-#       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
-#       id: strings
-#       shell: bash
-#       run: |
-#         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-#     - name: Configure CMake
-#       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-#       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-#       run: >
-#         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-#         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-#         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-#         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-#         -S ${{ github.workspace }}
-#     - name: Build
-#       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-#       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
-#     - name: Run
-#       run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-#     - name: Run
-#       run: |
-#         mkdir -p output/linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
-#         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-#         cp ${{ github.workspace }}/case_result.txt output/linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
-#     - uses: actions/upload-artifact@v4
-#       with:
-#         name: linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
-#         path: output
+  build_ubuntu_multiarch:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        build_type: [Release]
+        arch: [x86, aarch64, armv7]
+        c_compiler: [clang, gcc]
+        include:
+          - arch: x86
+            c_compiler: clang
+            cpp_compiler: clang++
+          - arch: x86
+            c_compiler: gcc
+            cpp_compiler: g++
+          - arch: aarch64
+            c_compiler: clang
+            cpp_compiler: clang++
+          - arch: aarch64
+            c_compiler: gcc
+            cpp_compiler: g++
+          - arch: armv7
+            c_compiler: clang
+            cpp_compiler: clang++
+          - arch: armv7
+            c_compiler: gcc
+            cpp_compiler: g++
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Alpine Linux for ${{ matrix.arch }}
+      uses: jirutka/setup-alpine@v1
+      with:
+        arch: ${{ matrix.arch }}
+        packages: gcc g++ make cmake libc-dev linux-headers python3
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Run
+      run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+    - name: Run
+      run: |
+        mkdir -p output/linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
+        ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+        cp ${{ github.workspace }}/case_result.txt output/linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
+        path: output
 
-#   build_macos:
-#     runs-on: macos-14
-#     strategy:
-#       matrix:
-#         build_type: [Release]
-#         c_compiler: [clang]
-#         cpp_compiler: [clang++]
-#     steps:
-#     - uses: actions/checkout@v4
-#     - name: Set reusable strings
-#       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
-#       id: strings
-#       shell: bash
-#       run: |
-#         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-#     - name: Configure CMake
-#       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-#       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-#       run: >
-#         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-#         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-#         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-#         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-#         -S ${{ github.workspace }}
-#     - name: Build
-#       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-#       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
-#     - name: Run
-#       run: |
-#         mkdir -p output/macos_${{ matrix.c_compiler }}
-#         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-#         cp ${{ github.workspace }}/case_result.txt output/macos_${{ matrix.c_compiler }}
-#     - uses: actions/upload-artifact@v4
-#       with:
-#         name: macos_${{ matrix.c_compiler }}
-#         path: output
+  build_macos:
+    runs-on: macos-14
+    strategy:
+      matrix:
+        build_type: [Release]
+        c_compiler: [clang]
+        cpp_compiler: [clang++]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Run
+      run: |
+        mkdir -p output/macos_${{ matrix.c_compiler }}
+        ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+        cp ${{ github.workspace }}/case_result.txt output/macos_${{ matrix.c_compiler }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: macos_${{ matrix.c_compiler }}
+        path: output
 
-#   build_win32:
-#     runs-on: windows-2022
-#     strategy:
-#       matrix:
-#         build_type: [Release]
-#         c_compiler: [cl]
-#         cpp_compiler: [cl]
-#     steps:
-#     - uses: actions/checkout@v4
-#     - name: Set reusable strings
-#       # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
-#       id: strings
-#       shell: bash
-#       run: |
-#         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-#     - name: Configure CMake
-#       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-#       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-#       run: >
-#         cmake -B ${{ steps.strings.outputs.build-output-dir }}
-#         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-#         -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-#         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-#         -S ${{ github.workspace }}
-#     - name: Build
-#       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
-#       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
-#     - name: Run
-#       run: |
-#         mkdir -p output/win32_${{ matrix.c_compiler }}
-#         ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test.exe
-#         cp ${{ github.workspace }}/case_result.txt output/win32_${{ matrix.c_compiler }}
-#     - uses: actions/upload-artifact@v4
-#       with:
-#         name: win32_${{ matrix.c_compiler }}
-#         path: output
+  build_win32:
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        build_type: [Release]
+        c_compiler: [cl]
+        cpp_compiler: [cl]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Run
+      run: |
+        mkdir -p output/win32_${{ matrix.c_compiler }}
+        ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test.exe
+        cp ${{ github.workspace }}/case_result.txt output/win32_${{ matrix.c_compiler }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: win32_${{ matrix.c_compiler }}
+        path: output
   merge:
     runs-on: ubuntu-22.04
-    # needs: [build_ubuntu, build_ubuntu_multiarch, build_macos, build_win32]
+    needs: [build_ubuntu, build_ubuntu_multiarch, build_macos, build_win32]
     steps:
       - uses: actions/checkout@v4
       - name: "Create output directory"
         run: "mkdir $GITHUB_WORKSPACE/output"
 
-      # - name: "Merge win32"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: win32_cl
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge win32"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: win32_cl
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge macos"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: macos_clang
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge macos"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: macos_clang
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_x64_clang"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_x64_clang
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_x64_clang"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_x64_clang
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_x64_gcc"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_x64_gcc
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_x64_gcc"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_x64_gcc
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_x86_gcc"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_x86_gcc
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_x86_gcc"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_x86_gcc
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_aarch64_gcc"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_aarch64_gcc
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_aarch64_gcc"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_aarch64_gcc
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_armv7_gcc"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_armv7_gcc
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_armv7_gcc"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_armv7_gcc
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_x86_clang"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_x86_clang
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_x86_clang"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_x86_clang
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_aarch64_clang"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_aarch64_clang
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_aarch64_clang"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_aarch64_clang
+          path: $GITHUB_WORKSPACE/output
 
-      # - name: "Merge linux_armv7_clang"
-      #   uses: actions/download-artifact@v4.1.7
-      #   with:
-      #     name: linux_armv7_clang
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Merge linux_armv7_clang"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_armv7_clang
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Compare artifacts"
         run: |
-          echo "ls:"
-          ls
-          echo "ls scripts:"
-          ls scripts
+          python scripts/all-in-one.py $GITHUB_WORKSPACE/output
       
-      # - name: "Upload merged artifact"
-      #   uses: actions/upload-artifact@v4.3.3
-      #   with:
-      #     name: all-in-one
-      #     path: $GITHUB_WORKSPACE/output
+      - name: "Upload merged artifact"
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: all-in-one
+          path: $GITHUB_WORKSPACE/output
 

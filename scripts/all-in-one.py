@@ -42,5 +42,5 @@ total_ans[f'{ref_name}_dec'] = total_ans[f'{ref_name}_dec'] + '(' + total_ans[f'
 total_ans = total_ans.drop(columns=[f'{ref_name}_hex'])
 total_ans.columns[0] = f'{ref_name}'
 
-total_ans.to_csv('all-in-one.csv')
+total_ans.to_csv(f'{root_path}/all-in-one.csv')
 

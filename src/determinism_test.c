@@ -92,7 +92,10 @@ int main()
     FILE* fp = freopen("case_result.txt", "w", stdout);
     for(int i=0;i<CASES_COUNT;i++)
     {
-        printf("%e,%llx\n", ref_ans[i], asuint64(ref_ans[i]));
+        // printf("%e,%llx\n", ref_ans[i], asuint64(ref_ans[i]));
+        volatile float x = (float)ref_ans[i];
+        volatile float y = x;
+        printf("%e,%x\n", y, asuint(y));
     }
     fclose(fp);
     free(ref_ans);

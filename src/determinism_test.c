@@ -88,6 +88,7 @@ int main()
             assert(issame(result, ref_ans[i]));
         }
     }
+    printf("Printing result to case_result.txt ...\n");
     FILE* fp = freopen("case_result.txt", "w", stdout);
     for(int i=0;i<CASES_COUNT;i++)
     {

@@ -40,7 +40,7 @@ for current_folder in folder_list:
     current_ans = current_ans.rename(columns = {f'{current_folder}_dec': f'{current_folder}'})
     total_ans = pd.concat([total_ans, current_ans], axis=1)
 
-total_ans[f'{ref_name}_dec'] = total_ans[f'{ref_name}_dec'] + '(' + total_ans[f'{ref_name}_hex'] + ')'
+total_ans[f'{ref_name}_dec'] = total_ans[f'{ref_name}_dec'].astype('str') + '(' + total_ans[f'{ref_name}_hex'] + ')'
 total_ans = total_ans.drop(columns=[f'{ref_name}_hex'])
 total_ans.rename(columns={f'{ref_name}_dec': f'{ref_name}'})
 

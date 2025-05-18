@@ -261,7 +261,8 @@ jobs:
 
       - name: "Compare artifacts"
         run: |
-          python ./all-in-one.py $GITHUB_WORKSPACE/output
+          python scripts/all-in-one.py $GITHUB_WORKSPACE/output
+          ls /scripts
       
       - name: "Upload merged artifact"
         uses: actions/upload-artifact@v4.3.3

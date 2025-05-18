@@ -5,7 +5,7 @@ import pandas as pd
 if len(sys.argv) > 1:
     root_path = sys.argv[1]
 else:
-    root_path = '.'
+    root_path = '..'
 case_result = '/case_result.txt'
 ref_path = '/win32_cl'
 ref_name = 'win32_cl'

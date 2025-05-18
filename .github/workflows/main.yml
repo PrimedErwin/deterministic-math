@@ -42,9 +42,9 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
       run: |
-        mkdir -p output/linux_x64
+        mkdir -p output/linux_x64_${{ matrix.c_compiler }}
         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-        cp ${{ github.workspace }}/case_result.txt output/linux_x64
+        cp ${{ github.workspace }}/case_result.txt output/linux_x64_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
         name: linux_x64
@@ -105,9 +105,9 @@ jobs:
       run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test
     - name: Run
       run: |
-        mkdir -p output/linux_${{ matrix.arch }}
+        mkdir -p output/linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-        cp ${{ github.workspace }}/case_result.txt output/linux_${{ matrix.arch }}
+        cp ${{ github.workspace }}/case_result.txt output/linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
         name: linux_${{ matrix.arch }}
@@ -142,9 +142,9 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
       run: |
-        mkdir -p output/macos
+        mkdir -p output/macos_${{ matrix.c_compiler }}
         ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-        cp ${{ github.workspace }}/case_result.txt output/macos
+        cp ${{ github.workspace }}/case_result.txt output/macos_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
         name: macos
@@ -179,9 +179,9 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
       run: |
-        mkdir -p output/win32
+        mkdir -p output/win32_${{ matrix.c_compiler }}
         ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test.exe
-        cp ${{ github.workspace }}/case_result.txt output/win32
+        cp ${{ github.workspace }}/case_result.txt output/win32_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
         name: win32
@@ -192,6 +192,10 @@ jobs:
     strategy:
       matrix:
         arch: [x86, aarch64, armv7]
+        win32_c_compiler: [cl]
+        macos_c_compiler: [clang]
+        linux_x64_c_compiler: [clang, gcc]
+        linux_multiarch_c_compiler: [clang, gcc]
     steps:
       - name: "Create output directory"
         run: "mkdir $GITHUB_WORKSPACE/output"

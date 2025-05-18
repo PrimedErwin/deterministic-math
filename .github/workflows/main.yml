@@ -261,13 +261,7 @@ jobs:
 
       - name: "Compare artifacts"
         run: |
-          cd $GITHUB_WORKSPACE
-          echo "$GITHUB_WORKSPACE files:"
-          ls
-          cd ..
-          echo "father dir files:"
-          ls
-          python all-in-one.py $GITHUB_WORKSPACE/output
+          python ./all-in-one.py $GITHUB_WORKSPACE/output
       
       - name: "Upload merged artifact"
         uses: actions/upload-artifact@v4.3.3

@@ -1,8 +1,8 @@
 #ifndef _CASES_H
 #define _CASES_H
 
-#define nan 0.0 / 0.0
-#define inf 1.0 / 0.0
+#define nan (0.0 / 0.0)
+#define inf (1.0 / 0.0)
 
 extern struct Case{
     double a;

@@ -190,6 +190,7 @@ jobs:
     runs-on: ubuntu-22.04
     # needs: [build_ubuntu, build_ubuntu_multiarch, build_macos, build_win32]
     steps:
+      - uses: actions/checkout@v4
       - name: "Create output directory"
         run: "mkdir $GITHUB_WORKSPACE/output"
 

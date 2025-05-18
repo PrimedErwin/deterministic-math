@@ -203,64 +203,69 @@ jobs:
         uses: actions/download-artifact@v4.1.7
         with:
           name: win32_cl
-          path: $GITHUB_WORKSPACE/output/win32_cl
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge macos"
         uses: actions/download-artifact@v4.1.7
         with:
           name: macos_clang
-          path: $GITHUB_WORKSPACE/output/macos_clang
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_x64_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x64_clang
-          path: $GITHUB_WORKSPACE/output/linux_x64_clang
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_x64_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x64_gcc
-          path: $GITHUB_WORKSPACE/output/linux_x64_gcc
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_x86_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x86_gcc
-          path: $GITHUB_WORKSPACE/output/linux_x86_gcc
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_aarch64_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_aarch64_gcc
-          path: $GITHUB_WORKSPACE/output/linux_aarch64_gcc
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_armv7_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_armv7_gcc
-          path: $GITHUB_WORKSPACE/output/linux_armv7_gcc
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_x86_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_x86_clang
-          path: $GITHUB_WORKSPACE/output/linux_x86_clang
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_aarch64_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_aarch64_clang
-          path: $GITHUB_WORKSPACE/output/linux_aarch64_clang
+          path: $GITHUB_WORKSPACE/output
 
       - name: "Merge linux_armv7_clang"
         uses: actions/download-artifact@v4.1.7
         with:
           name: linux_armv7_clang
-          path: $GITHUB_WORKSPACE/output/linux_armv7_clang
+          path: $GITHUB_WORKSPACE/output
+
+      - name: "Compare artifacts"
+        run: |
+          python all-in-one.py $GITHUB_WORKSPACE/output
       
       - name: "Upload merged artifact"
         uses: actions/upload-artifact@v4.3.3
         with:
           name: all-in-one
           path: $GITHUB_WORKSPACE/output
+

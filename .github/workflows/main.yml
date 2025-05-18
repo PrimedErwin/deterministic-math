@@ -47,7 +47,7 @@ jobs:
         cp ${{ github.workspace }}/case_result.txt output/linux_x64_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
-        name: linux_x64
+        name: linux_x64_${{ matrix.c_compiler }}
         path: output
 
   build_ubuntu_multiarch:
@@ -110,7 +110,7 @@ jobs:
         cp ${{ github.workspace }}/case_result.txt output/linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
-        name: linux_${{ matrix.arch }}
+        name: linux_${{ matrix.arch }}_${{ matrix.c_compiler }}
         path: output
 
   build_macos:
@@ -147,7 +147,7 @@ jobs:
         cp ${{ github.workspace }}/case_result.txt output/macos_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
-        name: macos
+        name: macos_${{ matrix.c_compiler }}
         path: output
 
   build_win32:
@@ -184,7 +184,7 @@ jobs:
         cp ${{ github.workspace }}/case_result.txt output/win32_${{ matrix.c_compiler }}
     - uses: actions/upload-artifact@v4
       with:
-        name: win32
+        name: win32_${{ matrix.c_compiler }}
         path: output
   merge:
     runs-on: ubuntu-22.04
@@ -203,25 +203,25 @@ jobs:
       - name: "Merge win32"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: win32
+          name: win32_${{ matrix.win32_c_compiler }}
           path: $GITHUB_WORKSPACE/output/win32
 
       - name: "Merge macos"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: macos
+          name: macos_${{ matrix.macos_c_compiler }}
           path: $GITHUB_WORKSPACE/output/macos
 
       - name: "Merge linux_x64"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: linux_x64
+          name: linux_x64_${{ matrix.linux_x64_c_compiler }}
           path: $GITHUB_WORKSPACE/output/linux_x64
 
       - name: "Merge linux_${{ matrix.arch }}"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: linux_${{ matrix.arch }}
+          name: linux_${{ matrix.arch }}_${{ matrix.linux_multiarch_c_compiler }}
           path: $GITHUB_WORKSPACE/output/linux_${{ matrix.arch }}
       
       - name: "Upload merged artifact"

@@ -86,9 +86,15 @@ int main()
                 break;
             }
             assert(issame(result, ref_ans[i]));
-            if(i==CASES_COUNT-1) printf("run %d: %.18f\n",test_time, result);
         }
     }
+    FILE* fp = freopen("case_result.txt", "w", stdout);
+    for(int i=0;i<CASES_COUNT;i++)
+    {
+        printf("%.18f,%llx\n", ref_ans[i], asuint64(ref_ans[i]));
+    }
+    fclose(fp);
+    free(ref_ans);
     return 0;
 }
 

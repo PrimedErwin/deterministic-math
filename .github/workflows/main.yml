@@ -41,7 +41,14 @@ jobs:
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
-      run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+      run: |
+        mkdir -p output/linux_x64
+        ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/linux_x64
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux_x64
+        path: output
 
   build_ubuntu_multiarch:
     runs-on: ubuntu-22.04
@@ -96,7 +103,15 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
       run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test
-
+    - name: Run
+      run: |
+        mkdir -p output/linux_${{ matrix.arch }}
+        ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/linux_${{ matrix.arch }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: linux_${{ matrix.arch }}
+        path: output
 
   build_macos:
     runs-on: macos-14
@@ -126,7 +141,14 @@ jobs:
       # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
-      run: ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+      run: |
+        mkdir -p output/macos
+        ${{ steps.strings.outputs.build-output-dir }}/determinism_test
+        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/macos
+    - uses: actions/upload-artifact@v4
+      with:
+        name: macos
+        path: output
 
   build_win32:
     runs-on: windows-2022
@@ -157,10 +179,10 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
     - name: Run
       run: |
-        mkdir -p output/Release
+        mkdir -p output/win32
         ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test.exe
-        cp ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.build_type }}/determinism_test.exe output/Release
+        cp ${{ steps.strings.outputs.build-output-dir }}/case_result.txt output/win32
     - uses: actions/upload-artifact@v4
       with:
-        name: windows
+        name: win32
         path: output

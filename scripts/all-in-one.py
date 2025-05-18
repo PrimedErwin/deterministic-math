@@ -1,5 +1,6 @@
 import os
 import sys
+import csv
 import pandas as pd
 
 if len(sys.argv) > 1:
@@ -44,5 +45,5 @@ total_ans[f'{ref_name}_dec'] = total_ans[f'{ref_name}_dec'].astype('str') + '(' 
 total_ans = total_ans.drop(columns=[f'{ref_name}_hex'])
 total_ans.rename(columns={f'{ref_name}_dec': f'{ref_name}'})
 
-total_ans.to_csv(f'{root_path}/all-in-one.csv')
+total_ans.to_csv(f'{root_path}/all-in-one.csv', quoting=csv.QUOTE_NONNUMERIC, quotechar='"')
 

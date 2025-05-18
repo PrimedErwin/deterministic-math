@@ -189,12 +189,12 @@ jobs:
   merge:
     runs-on: ubuntu-22.04
     needs: [build_ubuntu, build_ubuntu_multiarch, build_macos, build_win32]
-    matrix:
-      arch: [x86, aarch64, armv7]
-      win32_c_compiler: [cl]
-      macos_c_compiler: [clang]
-      linux_x64_c_compiler: [clang, gcc]
-      linux_multiarch_c_compiler: [clang, gcc]
+    # matrix:
+    #   arch: [x86, aarch64, armv7]
+    #   win32_c_compiler: [cl]
+    #   macos_c_compiler: [clang]
+    #   linux_x64_c_compiler: [clang, gcc]
+    #   linux_multiarch_c_compiler: [clang, gcc]
     steps:
       - name: "Create output directory"
         run: "mkdir $GITHUB_WORKSPACE/output"
@@ -202,26 +202,62 @@ jobs:
       - name: "Merge win32"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: win32_${{ matrix.win32_c_compiler }}
-          path: $GITHUB_WORKSPACE/output/win32
+          name: win32_cl
+          path: $GITHUB_WORKSPACE/output/win32_cl
 
       - name: "Merge macos"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: macos_${{ matrix.macos_c_compiler }}
-          path: $GITHUB_WORKSPACE/output/macos
+          name: macos_clang
+          path: $GITHUB_WORKSPACE/output/macos_clang
 
-      - name: "Merge linux_x64"
+      - name: "Merge linux_x64_clang"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: linux_x64_${{ matrix.linux_x64_c_compiler }}
-          path: $GITHUB_WORKSPACE/output/linux_x64
+          name: linux_x64_clang
+          path: $GITHUB_WORKSPACE/output/linux_x64_clang
 
-      - name: "Merge linux_${{ matrix.arch }}"
+      - name: "Merge linux_x64_gcc"
         uses: actions/download-artifact@v4.1.7
         with:
-          name: linux_${{ matrix.arch }}_${{ matrix.linux_multiarch_c_compiler }}
-          path: $GITHUB_WORKSPACE/output/linux_${{ matrix.arch }}
+          name: linux_x64_gcc
+          path: $GITHUB_WORKSPACE/output/linux_x64_gcc
+
+      - name: "Merge linux_x86_gcc"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_x86_gcc
+          path: $GITHUB_WORKSPACE/output/linux_x86_gcc
+
+      - name: "Merge linux_aarch64_gcc"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_aarch64_gcc
+          path: $GITHUB_WORKSPACE/output/linux_aarch64_gcc
+
+      - name: "Merge linux_armv7_gcc"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_armv7_gcc
+          path: $GITHUB_WORKSPACE/output/linux_armv7_gcc
+
+      - name: "Merge linux_x86_clang"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_x86_clang
+          path: $GITHUB_WORKSPACE/output/linux_x86_clang
+
+      - name: "Merge linux_aarch64_clang"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_aarch64_clang
+          path: $GITHUB_WORKSPACE/output/linux_aarch64_clang
+
+      - name: "Merge linux_armv7_clang"
+        uses: actions/download-artifact@v4.1.7
+        with:
+          name: linux_armv7_clang
+          path: $GITHUB_WORKSPACE/output/linux_armv7_clang
       
       - name: "Upload merged artifact"
         uses: actions/upload-artifact@v4.3.3

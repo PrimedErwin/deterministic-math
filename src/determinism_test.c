@@ -44,11 +44,11 @@ int main()
 
     for(int i=0;i<TEST_TIME;i++)
     {
+        int x = i + 1;
         for(int j=0;j<CASES_COUNT;j++)
         {
-            unsigned long long select_index = asuint64((cases[j].a + cases[j].b)*i) % 2;
-            if(select_index == 0) case_sum[j] = cases[j].a;
-            else case_sum[j] = cases[j].b;
+            x = (x * 5 + 1) % 65536;
+            case_sum[j] = cases[x].a;
         }
         ref_ans_sum[i] = sum(case_sum, CASES_COUNT);
         ref_ans_fsum[i] = fsum_main(case_sum, CASES_COUNT);

@@ -16,7 +16,7 @@ static double sum(double* iterable, int len)
     double res = 0;
     for(int i=0;i<len;i++)
     {
-        res += iterable[i];
+        res -= iterable[i];
     }
     return res;
 }

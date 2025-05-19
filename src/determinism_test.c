@@ -47,7 +47,7 @@ int main()
         for(int j=0;j<CASES_COUNT;j++)
         {
             double temp = (cases[j].a + cases[j].b)*i;
-            int select_index = ((int)temp) % 2;
+            int select_index = ((int)floor(temp)) % 2;
             if(select_index == 0) case_sum[j] = cases[j].a;
             else case_sum[j] = cases[j].b;
         }

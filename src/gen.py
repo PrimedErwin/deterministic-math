@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 uniform = random.uniform
 
@@ -58,13 +59,15 @@ for i in range(100000):
     b = random_group(g2)
     cases.append(Case(a, b, op))
 
+a = np.random.normal(0,1,(100000,))
+
 # to C struct
 with open('cases.c', 'w') as f:
     f.write('#include "cases.h"\n')
     f.write('\n')
     f.write('struct Case cases[] = {\n')
-    for case in cases:
-        f.write(f'    {{ {case.a}, {case.b}, \'{case.op}\' }},\n')
+    for case in a:
+        f.write(f'    {{ {case}, {0}, \'{0}\' }},\n')
     f.write('};\n')
     f.write('\n')
     f.write(f'const int CASES_COUNT = {len(cases)};\n')

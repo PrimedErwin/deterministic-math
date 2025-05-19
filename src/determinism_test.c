@@ -58,7 +58,7 @@ int main()
     FILE* fp = freopen("case_result.txt", "w", stdout);
     for(int i=0;i<TEST_TIME;i++)
     {
-        printf("%e,%llx\n", ref_ans_sum[i], asuint64(ref_ans_sum[i]));
+        printf("%f,%llx\n", ref_ans_sum[i], asuint64(ref_ans_sum[i]));
         // volatile float x = (float)ref_ans[i];
         // volatile float y = x;
         // printf("%e,%x\n", y, asuint(y));

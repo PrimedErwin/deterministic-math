@@ -8,7 +8,7 @@
 #endif
 #include "cases.h"
 
-#define TEST_TIME 1000
+#define TEST_TIME 10000
 #define issame(a, b) (a==b) || (isnan(a) && isnan(b))
 
 static double sum(double* iterable, int len)
@@ -38,37 +38,25 @@ static double fsum_main(double* aptr, int n)
 
 int main()
 {
-    double* case_sum = (double*)malloc(CASES_COUNT*sizeof(double));
-    double* ref_ans_sum = (double*)malloc(TEST_TIME*sizeof(double));
-    double* ref_ans_fsum = (double*)malloc(TEST_TIME*sizeof(double));
-
-    for(int i=0;i<TEST_TIME;i++)
-    {
-        int x = i + 1;
-        for(int j=0;j<CASES_COUNT;j++)
-        {
-            x = (x * 5 + 1) % 65536;
-            case_sum[j] = cases[x].a;
-        }
-        ref_ans_sum[i] = sum(case_sum, CASES_COUNT);
-        ref_ans_fsum[i] = fsum_main(case_sum, CASES_COUNT);
-    }
+    double* sin_sum = (double*)malloc(TEST_TIME*sizeof(double));
 
     printf("Printing result to case_result.txt ...\n");
     FILE* fp = freopen("case_result.txt", "w", stdout);
     for(int i=0;i<TEST_TIME;i++)
     {
-        printf("%f,%llx\n", ref_ans_sum[i], asuint64(ref_ans_sum[i]));
+        double sin_val = sin((double)i);
+        sin_sum[i] = sin_val;
+        printf("%f,%llx\n", sin_val, asuint64(sin_val));
         // volatile float x = (float)ref_ans[i];
         // volatile float y = x;
         // printf("%e,%x\n", y, asuint(y));
     }
-    for(int i=0;i<TEST_TIME;i++)
-    {
-        printf("%e,%llx\n", ref_ans_fsum[i], asuint64(ref_ans_fsum[i]));
-    }
+    double ref_ans_sum = sum(sin_sum, TEST_TIME);
+    double ref_ans_fsum = fsum_main(sin_sum, TEST_TIME);
+    printf("%f,%llx\n", ref_ans_sum, asuint64(ref_ans_sum));
+    printf("%f,%llx\n", ref_ans_fsum, asuint64(ref_ans_fsum));
     fclose(fp);
-    free(case_sum);
+    free(sin_sum);
     return 0;
 }
 

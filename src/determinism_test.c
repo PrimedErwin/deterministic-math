@@ -8,7 +8,7 @@
 #endif
 #include "cases.h"
 
-#define TEST_TIME 5
+#define TEST_TIME 1000
 #define issame(a, b) (a==b) || (isnan(a) && isnan(b))
 
 static double sum(double* iterable, int len)
@@ -21,84 +21,54 @@ static double sum(double* iterable, int len)
     return res;
 }
 
-void double2binary(double input, char* output)
+static double fsum_main(double* aptr, int n)
 {
-    unsigned long long _i = asuint64(input);
-    for(int i=0;i<64;i++)
-    {
-        output[63-i] = (_i & 1)? '1': '0';
-        _i = _i >> 1;
-    }
-}
 
-void calculate_result(double* result)
-{
-    for(int i=0;i<CASES_COUNT;i++)
-    {
-        char op = cases[i].op;
-        switch (op)
-        {
-        case '+':
-            result[i] = cases[i].a + cases[i].b;
-            break;
-        case '-':
-            result[i] = cases[i].a - cases[i].b;
-            break;
-        case '*':
-            result[i] = cases[i].a * cases[i].b;
-            break;
-        case '/':
-            result[i] = cases[i].a / cases[i].b;
-            break;
-        default:
-            break;
-        }
-    }
+	/*Kahan sum for float addition*/
+	double sum = 0, C = 0, Y, T;
+	for (int i = 0; i < n; i++)
+	{
+		Y = aptr[i] - C;
+		T = sum + Y;
+		C = T - sum - Y;
+		sum = T;
+	}
+	return sum;
 }
 
 int main()
 {
-    double* ref_ans = (double*)malloc(CASES_COUNT*sizeof(double));
-    int test_time = 0;
-    calculate_result(ref_ans);
-    while(test_time < TEST_TIME)
+    double* case_sum = (double*)malloc(CASES_COUNT*sizeof(double));
+    double* ref_ans_sum = (double*)malloc(TEST_TIME*sizeof(double));
+    double* ref_ans_fsum = (double*)malloc(TEST_TIME*sizeof(double));
+
+    for(int i=0;i<TEST_TIME;i++)
     {
-        test_time++;
-        double result;
-        for(int i=0;i<CASES_COUNT;i++)
+        for(int j=0;j<CASES_COUNT;j++)
         {
-            char op = cases[i].op;
-            switch (op)
-            {
-            case '+':
-                result = cases[i].a + cases[i].b;
-                break;
-            case '-':
-                result = cases[i].a - cases[i].b;
-                break;
-            case '*':
-                result = cases[i].a * cases[i].b;
-                break;
-            case '/':
-                result = cases[i].a / cases[i].b;
-                break;
-            default:
-                break;
-            }
-            assert(issame(result, ref_ans[i]));
+            int select_index = (int)((cases[j].a + cases[j].b)*i) % 2;
+            if(select_index == 0) case_sum[j] = cases[j].a;
+            else case_sum[j] = cases[j].b;
         }
+        ref_ans_sum[i] = sum(case_sum, CASES_COUNT);
+        ref_ans_fsum[i] = fsum_main(case_sum, CASES_COUNT);
     }
+
     printf("Printing result to case_result.txt ...\n");
     FILE* fp = freopen("case_result.txt", "w", stdout);
-    for(int i=0;i<CASES_COUNT;i++)
+    for(int i=0;i<TEST_TIME;i++)
     {
-        // printf("%e,%llx\n", ref_ans[i], asuint64(ref_ans[i]));
-        volatile float x = (float)ref_ans[i];
-        volatile float y = x;
-        printf("%e,%x\n", y, asuint(y));
+        printf("%e,%llx\n", ref_ans_sum[i], asuint64(ref_ans_sum[i]));
+        // volatile float x = (float)ref_ans[i];
+        // volatile float y = x;
+        // printf("%e,%x\n", y, asuint(y));
+    }
+    for(int i=0;i<TEST_TIME;i++)
+    {
+        printf("%e,%llx\n", ref_ans_fsum[i], asuint64(ref_ans_fsum[i]));
     }
     fclose(fp);
-    free(ref_ans);
+    free(case_sum);
     return 0;
 }
 

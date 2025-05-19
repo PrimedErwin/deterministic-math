@@ -4,9 +4,8 @@ name: CMake on multiple platforms
 
 on:
   push:
-    branches: [ "determinism" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "determinism_asm" ]
+
 
 jobs:
   build_ubuntu:

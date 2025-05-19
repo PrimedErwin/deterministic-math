@@ -4,7 +4,7 @@ name: CMake on multiple platforms
 
 on:
   push:
-    branches: [ "determinism_asm" ]
+    branches: [ "determinism_asm_sum" ]
 
 
 jobs:

@@ -51,10 +51,6 @@ int main()
         // volatile float y = x;
         // printf("%e,%x\n", y, asuint(y));
     }
-    double ref_ans_sum = sum(sin_sum, TEST_TIME);
-    double ref_ans_fsum = fsum_main(sin_sum, TEST_TIME);
-    printf("%f,%llx\n", ref_ans_sum, asuint64(ref_ans_sum));
-    printf("%f,%llx\n", ref_ans_fsum, asuint64(ref_ans_fsum));
     fclose(fp);
     free(sin_sum);
     return 0;

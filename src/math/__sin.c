@@ -52,11 +52,24 @@ S6  =  1.58969099521155010221e-10; /* 0x3DE5D93A, 0x5ACFD57C */
 double __sin(double x, double y, int iy)
 {
 	double z,r,v,w;
-
+	printf("6bp%f,%llx\n",x,asuint64(x));
+	printf("7bp%f,%llx\n",y,asuint64(y));
 	z = x*x;
 	w = z*z;
 	r = S2 + z*(S3 + z*S4) + z*w*(S5 + z*S6);
 	v = z*x;
+	printf("8bp%f,%llx\n",z,asuint64(z));
+	printf("9bp%f,%llx\n",w,asuint64(w));
+	printf("10bp%f,%llx\n",r,asuint64(r));
+	printf("11bp%f,%llx\n",v,asuint64(v));
+	printf("12bp%f,%llx\n",0.5*y,asuint64(0.5*y));
+	printf("13bp%f,%llx\n",v*r,asuint64(v*r));
+	printf("14bp%f,%llx\n",(0.5*y - v*r),asuint64((0.5*y - v*r)));
+	printf("15bp%f,%llx\n",z*(0.5*y - v*r),asuint64(z*(0.5*y - v*r)));
+	printf("16bp%f,%llx\n",(z*(0.5*y - v*r) - y),asuint64((z*(0.5*y - v*r) - y)));
+	printf("17bp%f,%llx\n",v*S1,asuint64(v*S1));
+	printf("18bp%f,%llx\n",((z*(0.5*y - v*r) - y) - v*S1),asuint64(((z*(0.5*y - v*r) - y) - v*S1)));
+	printf("4bp%f,%llx\n",x - ((z*(0.5*y - v*r) - y) - v*S1),asuint64(x - ((z*(0.5*y - v*r) - y) - v*S1)));
 	if (iy == 0)
 		return x + v*(S1 + z*r);
 	else

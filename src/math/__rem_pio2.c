@@ -56,6 +56,7 @@ int __rem_pio2(double x, double *y)
 
 	sign = u.i>>63;
 	ix = u.i>>32 & 0x7fffffff;
+	printf("2bp%d,ff\n",ix);
 	if (ix <= 0x400f6a7a) {  /* |x| ~<= 5pi/4 */
 		if ((ix & 0xfffff) == 0x921fb)  /* |x| ~= pi/2 or 2pi/2 */
 			goto medium;  /* cancellation -- use medium case */
@@ -123,6 +124,8 @@ medium:
 		n = (int)fn;
 		r = x - fn*pio2_1;
 		w = fn*pio2_1t;  /* 1st round, good to 85 bits */
+		printf("3bp%f,%llx\n",r,asuint64(r));
+		printf("4bp%f,%llx\n",w,asuint64(w));
 		/* Matters with directed rounding. */
 		if (predict_false(r - w < -pio4)) {
 			n--;

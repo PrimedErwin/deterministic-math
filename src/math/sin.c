@@ -51,7 +51,7 @@ double sin(double x)
 	/* High word of x. */
 	GET_HIGH_WORD(ix, x);
 	ix &= 0x7fffffff;
-
+	printf("1bp%d,ff\n",ix);
 	/* |x| ~< pi/4 */
 	if (ix <= 0x3fe921fb) {
 		if (ix < 0x3e500000) {  /* |x| < 2**-26 */
@@ -68,6 +68,7 @@ double sin(double x)
 
 	/* argument reduction needed */
 	n = __rem_pio2(x, y);
+	printf("5bp%d,ff\n",n);
 	switch (n&3) {
 	case 0: return  __sin(y[0], y[1], 1);
 	case 1: return  __cos(y[0], y[1]);

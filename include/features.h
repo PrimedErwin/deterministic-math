@@ -1,10 +1,6 @@
 #ifndef _FEATURES_H
 #define _FEATURES_H
 
-#if defined(_WIN32) || defined(_WIN64)
-#define hidden 
-#endif
-
 #if defined(_ALL_SOURCE) && !defined(_GNU_SOURCE)
 #define _GNU_SOURCE 1
 #endif
@@ -40,5 +36,14 @@
 // #endif
 
 #define __REDIR(x,y) __typeof__(x) x __asm__(#y)
+
+#if defined(_MSC_VER)
+#define hidden 
+#else
+#define weak __attribute__((__weak__))
+#define hidden __attribute__((__visibility__("hidden")))
+#define weak_alias(old, new) \
+	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
+#endif
 
 #endif

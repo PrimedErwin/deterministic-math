@@ -7,12 +7,20 @@ extern "C" {
 
 #include <features.h>
 
+#if defined(_WIN32) || defined(_WIN64)
 #if defined _M_IX86 && _M_IX86_FP < 2 && !defined _M_FP_FAST
-    typedef long double float_t;
-    typedef long double double_t;
+	typedef long double float_t;
+	typedef long double double_t;
 #else
-    typedef float  float_t;
-    typedef double double_t;
+	typedef float  float_t;
+	typedef double double_t;
+#endif
+#endif
+
+#if defined(__linux__)
+#define __NEED_float_t
+#define __NEED_double_t
+#include <bits/alltypes.h>
 #endif
 
 #ifndef _HUGE_ENUF

@@ -15,7 +15,7 @@ extern "C" {
 	typedef double double_t;
 #endif
 
-#if defined(__linux__) || defined(__APPLE__)
+#if defined(__linux__)
 #define __NEED_float_t
 #define __NEED_double_t
 #include <bits/alltypes.h>

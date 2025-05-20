@@ -4,8 +4,7 @@
 #include <stdint.h>
 #include <float.h>
 #include <math.h>
-#include <endian.h>
-#include "fp_arch.h"
+
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
 #elif LDBL_MANT_DIG == 64 && LDBL_MAX_EXP == 16384 && __BYTE_ORDER == __LITTLE_ENDIAN
@@ -187,10 +186,14 @@ static inline void fp_force_evall(long double x)
 	}                                         \
 } while(0)
 
-#define asuint(f) ((union{float _f; uint32_t _i;}){f})._i
-#define asfloat(i) ((union{uint32_t _i; float _f;}){i})._f
-#define asuint64(f) ((union{double _f; uint64_t _i;}){f})._i
-#define asdouble(i) ((union{uint64_t _i; double _f;}){i})._f
+typedef union {float _f; unsigned int _i;}asuint_union;
+typedef union {unsigned int _i; float _f;}asfloat_union;
+typedef union {double _f; unsigned long long _i;}asuint64_union;
+typedef union {unsigned long long _i; double _f;}asdouble_union;
+#define asuint(f) ((asuint_union){f})._i
+#define asfloat(i) ((asfloat_union){i})._f
+#define asuint64(f) ((asuint64_union){f})._i
+#define asdouble(i) ((asdouble_union){i})._f
 
 #define EXTRACT_WORDS(hi,lo,d)                    \
 do {                                              \

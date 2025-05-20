@@ -46,4 +46,6 @@
 	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
 #endif
 
+#define __GLIBC_USE(F)	__GLIBC_USE_ ## F
+
 #endif

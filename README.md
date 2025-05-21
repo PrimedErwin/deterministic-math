@@ -1,6 +1,42 @@
 ## What is this lib
 This is a experimental math lib based on [musl libc](https://musl.libc.org/), aiming at the determinism on all platforms. Different from musl libc, there are no code for a specific platform(like asm instructions). 
 
+## Branches
+Tag `Dev`: developping
+
+Tag `Finished`: the branch finished its job, and is going to be deprecated
+### main
+Main branch. Other developping branches are created based on this, and will finally merged into `main`.
+### debug_sin
+`Finished` A test on mac showing that mac didn't turn off fma. Fixed.
+### determinism_asm_sin
+`Dev` Test trigonometry operations using musl. 
+### determinism_asm_sum
+`Finished` Test basic operations like sum, without musl. Validates the stability of basic operations across platforms.
+### determinism
+`Finished` Test `+ - * /`, double to float across platforms.
+
+## Test
+Simple tests with `determinism_test.c`. Tested on Windows11, 22H2, x64_64, AMD Ryzen Threadripper 3990X. 
+
+**Cumulative error** is found in the test. A small number equal to DBL_EPSILON is produced during the computation. 
+For example, sqrt(2), the result of pow(sqrt(2), 2) is 2.0+2*DBL_EPSILON. The same phenomenon is found on the following compilers. 
+### Clang 20.1.4
+No problem.
+### GNU 14.2.0
+No problem.
+### MSVC 19.29.30154
+No problem.
+
+### Other platform test
+Except for windows, CI in [Github Actions](https://github.com/PrimedErwin/deterministic-math/actions) tests this repo on:
+
+Ubuntu 22.04, x64, gcc and clang
+
+Ubuntu 22.04, x86 aarch64 armv7, gcc and clang
+
+Macos 14, clang
+
 ## Changelog
 ### [Origin musl libc](https://github.com/PrimedErwin/deterministic-math/commit/a5c1df1e2ae5a744c28a7bc4167d0b90ceec297e): the original musl libc.
 ### [Keepping math only](https://github.com/PrimedErwin/deterministic-math/commit/00146e092a89ddc9d3afb56438dee311981978af): deleted most of the code.
@@ -52,18 +88,4 @@ Modification: all files' include headers are changed.
 Files like `cos.c` including `libm.h` are changed to `math.h`.
 Files like `__fpclassify.c` including `math.h, stdint.h` are changed to `math.h`.
 
-## Test
-Simple tests with `determinism_test.c`. Tested on Windows11, 22H2, x64_64, AMD Ryzen Threadripper 3990X. 
 
-**Cumulative error** is found in the test. A small number equal to DBL_EPSILON is produced during the computation. 
-For example, sqrt(2), the result of pow(sqrt(2), 2) is 2.0+2*DBL_EPSILON. The same phenomenon is found on the following compilers. 
-### Clang 20.1.4
-No problem.
-### GNU 14.2.0
-No problem.
-### MSVC 19.29.30154
-/fp:strict will get C2099 and C2177, /fp:precise will get C2177.
-
-C2099: defines should be constant, #ifdef .. #define VALUE 10 #elif .. is not allowed.
-C2177: INFINITY in this repo is 1e5000f, which is too big, this is not allowed.
-Try other values to replace INFINITY in test case to make the test run.

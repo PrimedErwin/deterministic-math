@@ -5,14 +5,6 @@
 #include "float.h"
 #include "math.h"
 
-#if defined(_MSC_VER)
-#define hidden 
-#else
-#define weak __attribute__((__weak__))
-#define hidden __attribute__((__visibility__("hidden")))
-#define weak_alias(old, new) \
-	extern __typeof(old) new __attribute__((__weak__, __alias__(#old)))
-#endif
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
 #elif LDBL_MANT_DIG == 64 && LDBL_MAX_EXP == 16384 && __BYTE_ORDER == __LITTLE_ENDIAN

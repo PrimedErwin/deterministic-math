@@ -15,7 +15,7 @@
  * Return cube root of x
  */
 
-#include <math.h>
+#include "math.h"
 #include <stdint.h>
 
 static const uint32_t

@@ -5,7 +5,7 @@
 #ifndef _LOG_DATA_H
 #define _LOG_DATA_H
 
-#include <features.h>
+#include "features.h"
 
 #define LOG_TABLE_BITS 7
 #define LOG_POLY_ORDER 6

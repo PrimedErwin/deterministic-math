@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <math.h>
+#include "math.h"
 #include "libm.h"
 #include "sqrt_data.h"
 

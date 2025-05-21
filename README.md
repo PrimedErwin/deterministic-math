@@ -15,6 +15,13 @@ Main branch. Other developping branches are created based on this, and will fina
 `Finished` Test basic operations like sum, without musl. Validates the stability of basic operations across platforms.
 ### determinism
 `Finished` Test `+ - * /`, double to float across platforms.
+### Redo
+`Dev` A version from `determinism_asm_sin`, uses the origin musl libc.
+
+- Math functions: no implementations are changed. `math.h, features.h, float.h` are included as `#include ""`.
+- -1ULL: -1ULL and -1ULL>>1 are replaced by macros.
+- features.h: add `hidden` definition, which is required by `xxx_data.h` and `libm.h`.
+
 
 ## Test
 Simple tests with `determinism_test.c`. Tested on Windows11, 22H2, x64_64, AMD Ryzen Threadripper 3990X. 

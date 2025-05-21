@@ -1,4 +1,4 @@
-#include <math.h>
+#include "math.h"
 #include <stdint.h>
 
 double fmod(double x, double y)
@@ -26,14 +26,14 @@ double fmod(double x, double y)
 		for (i = uxi<<12; i>>63 == 0; ex--, i <<= 1);
 		uxi <<= -ex + 1;
 	} else {
-		uxi &= -1ULL >> 12;
+		uxi &= ULLONG_NSHIFT >> 12;
 		uxi |= 1ULL << 52;
 	}
 	if (!ey) {
 		for (i = uy.i<<12; i>>63 == 0; ey--, i <<= 1);
 		uy.i <<= -ey + 1;
 	} else {
-		uy.i &= -1ULL >> 12;
+		uy.i &= ULLONG_NSHIFT >> 12;
 		uy.i |= 1ULL << 52;
 	}
 

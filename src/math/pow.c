@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <math.h>
+#include "math.h"
 #include <stdint.h>
 #include "libm.h"
 #include "exp_data.h"
@@ -61,7 +61,7 @@ static inline double_t log_inline(uint64_t ix, double_t *tail)
 	r = __builtin_fma(z, invc, -1.0);
 #else
 	/* Split z such that rhi, rlo and rhi*rhi are exact and |rlo| <= |r|.  */
-	double_t zhi = asdouble((iz + (1ULL << 31)) & (-1ULL << 32));
+	double_t zhi = asdouble((iz + (1ULL << 31)) & (ULLONG_NSHIFT << 32));
 	double_t zlo = z - zhi;
 	double_t rhi = zhi * invc - 1.0;
 	double_t rlo = zlo * invc;
@@ -332,9 +332,9 @@ double pow(double x, double y)
 	ehi = y * hi;
 	elo = y * lo + __builtin_fma(y, hi, -ehi);
 #else
-	double_t yhi = asdouble(iy & -1ULL << 27);
+	double_t yhi = asdouble(iy & ULLONG_NSHIFT << 27);
 	double_t ylo = y - yhi;
-	double_t lhi = asdouble(asuint64(hi) & -1ULL << 27);
+	double_t lhi = asdouble(asuint64(hi) & ULLONG_NSHIFT << 27);
 	double_t llo = hi - lhi + lo;
 	ehi = yhi * lhi;
 	elo = ylo * lhi + y * llo; /* |elo| < |ehi| * 2^-25.  */

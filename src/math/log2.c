@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-#include <math.h>
+#include "math.h"
 #include <stdint.h>
 #include "libm.h"
 #include "log2_data.h"
@@ -47,7 +47,7 @@ double log2(double x)
 		lo = r * InvLn2lo + __builtin_fma(r, InvLn2hi, -hi);
 #else
 		double_t rhi, rlo;
-		rhi = asdouble(asuint64(r) & -1ULL << 32);
+		rhi = asdouble(asuint64(r) & ULLONG_NSHIFT << 32);
 		rlo = r - rhi;
 		hi = rhi * InvLn2hi;
 		lo = rlo * InvLn2hi + r * InvLn2lo;
@@ -99,7 +99,7 @@ double log2(double x)
 	double_t rhi, rlo;
 	/* rounding error: 0x1p-55/N + 0x1p-65.  */
 	r = (z - T2[i].chi - T2[i].clo) * invc;
-	rhi = asdouble(asuint64(r) & -1ULL << 32);
+	rhi = asdouble(asuint64(r) & ULLONG_NSHIFT << 32);
 	rlo = r - rhi;
 	t1 = rhi * InvLn2hi;
 	t2 = rlo * InvLn2hi + r * InvLn2lo;

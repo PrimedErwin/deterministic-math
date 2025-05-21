@@ -2,10 +2,9 @@
 #define _LIBM_H
 
 #include <stdint.h>
-#include <float.h>
-#include <math.h>
-#include <endian.h>
-#include "fp_arch.h"
+#include "float.h"
+#include "math.h"
+
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
 #elif LDBL_MANT_DIG == 64 && LDBL_MAX_EXP == 16384 && __BYTE_ORDER == __LITTLE_ENDIAN
@@ -187,10 +186,14 @@ static inline void fp_force_evall(long double x)
 	}                                         \
 } while(0)
 
-#define asuint(f) ((union{float _f; uint32_t _i;}){f})._i
-#define asfloat(i) ((union{uint32_t _i; float _f;}){i})._f
-#define asuint64(f) ((union{double _f; uint64_t _i;}){f})._i
-#define asdouble(i) ((union{uint64_t _i; double _f;}){i})._f
+typedef union {float _f; unsigned int _i;}asuint_union;
+typedef union {unsigned int _i; float _f;}asfloat_union;
+typedef union {double _f; unsigned long long _i;}asuint64_union;
+typedef union {unsigned long long _i; double _f;}asdouble_union;
+#define asuint(f) ((asuint_union){f})._i
+#define asfloat(i) ((asfloat_union){i})._f
+#define asuint64(f) ((asuint64_union){f})._i
+#define asdouble(i) ((asdouble_union){i})._f
 
 #define EXTRACT_WORDS(hi,lo,d)                    \
 do {                                              \
@@ -236,25 +239,25 @@ hidden int    __rem_pio2(double,double*);
 hidden double __sin(double,double,int);
 hidden double __cos(double,double);
 hidden double __tan(double,double,int);
-hidden double __expo2(double,double);
+// hidden double __expo2(double,double);
 
-hidden int    __rem_pio2f(float,double*);
-hidden float  __sindf(double);
-hidden float  __cosdf(double);
-hidden float  __tandf(double,int);
-hidden float  __expo2f(float,float);
+// hidden int    __rem_pio2f(float,double*);
+// hidden float  __sindf(double);
+// hidden float  __cosdf(double);
+// hidden float  __tandf(double,int);
+// hidden float  __expo2f(float,float);
 
-hidden int __rem_pio2l(long double, long double *);
-hidden long double __sinl(long double, long double, int);
-hidden long double __cosl(long double, long double);
-hidden long double __tanl(long double, long double, int);
+// hidden int __rem_pio2l(long double, long double *);
+// hidden long double __sinl(long double, long double, int);
+// hidden long double __cosl(long double, long double);
+// hidden long double __tanl(long double, long double, int);
 
-hidden long double __polevll(long double, const long double *, int);
-hidden long double __p1evll(long double, const long double *, int);
+// hidden long double __polevll(long double, const long double *, int);
+// hidden long double __p1evll(long double, const long double *, int);
 
-extern int __signgam;
-hidden double __lgamma_r(double, int *);
-hidden float __lgammaf_r(float, int *);
+// extern int __signgam;
+// hidden double __lgamma_r(double, int *);
+// hidden float __lgammaf_r(float, int *);
 
 /* error handling functions */
 hidden float __math_xflowf(uint32_t, float);

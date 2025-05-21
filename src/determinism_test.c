@@ -38,26 +38,24 @@ static double fsum_main(double* aptr, int n)
 
 int main()
 {
-    // double* sin_cal = (double*)malloc(TEST_TIME*sizeof(double));
+    double* sin_cal = (double*)malloc(TEST_TIME*sizeof(double));
 
     printf("Printing result to case_result.txt ...\n");
     FILE* fp = freopen("case_result.txt", "w", stdout);
-    for(int i=0;i<TEST_TIME;i++)
+    for(int i=0;i<5000;i++)
     {
-        double cos_val = cos(cases[i].a);
-        printf("%f,%llx\n", cos_val, asuint64(cos_val));
-        // volatile float x = (float)ref_ans[i];
-        // volatile float y = x;
-        // printf("%e,%x\n", y, asuint(y));
+        sin_cal[i] = sin(i);
     }
-    for(int i=0;i<TEST_TIME;i++)
+    for(int i=5000;i<9999;i++)
     {
-        double tan_val = tan(cases[i].a);
-        printf("%f,%llx\n", tan_val, asuint64(tan_val));
+        sin_cal[i] = cos(i);
     }
-
+    double ans_sum = sum(sin_cal, 9999);
+    double ans_fsum = fsum(sin_cal, 9999);
+    printf("%f,%llx\n", ans_sum, asuint64(ans_sum));
+    printf("%f,%llx\n", ans_fsum, asuint64(ans_fsum));
     fclose(fp);
-    // free(sin_cal);
+    free(sin_cal);
     return 0;
 }
 

@@ -59,15 +59,17 @@ for i in range(100000):
     b = random_group(g2)
     cases.append(Case(a, b, op))
 
-a = np.linspace(-1, 1, 10000)
-b = np.linspace(-20, 20, 10000)
+a = np.linspace(-1, 1, 100)
+x, y = np.meshgrid(a,a)
+x = x.reshape(1,10000)
+y = y.reshape(1,10000)
 
 # to C struct
 with open('cases.c', 'w') as f:
     f.write('#include "cases.h"\n')
     f.write('\n')
     f.write('struct Case cases[] = {\n')
-    for _a, _b in zip(a, b):
+    for _a, _b in zip(x[0], y[0]):
         f.write(f'    {{ {_a}, {_b}, \'{0}\' }},\n')
     f.write('};\n')
     f.write('\n')

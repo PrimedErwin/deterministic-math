@@ -44,12 +44,28 @@ int main()
     FILE* fp = freopen("case_result.txt", "w", stdout);
     for(int i=0;i<TEST_TIME;i++)
     {
-        double sin_val = sin(cases[i].a);
+        double sin_val = cbrt(cases[i].a);
         printf("%f,%llx\n", sin_val, asuint64(sin_val));
         // volatile float x = (float)ref_ans[i];
         // volatile float y = x;
         // printf("%e,%x\n", y, asuint(y));
     }
+    for(int i=0;i<TEST_TIME;i++)
+    {
+        double sin_val = ceil(cases[i].a);
+        printf("%f,%llx\n", sin_val, asuint64(sin_val));
+    }
+    for(int i=0;i<TEST_TIME;i++)
+    {
+        double sin_val = fabs(cases[i].a);
+        printf("%f,%llx\n", sin_val, asuint64(sin_val));
+    }
+    for(int i=0;i<TEST_TIME;i++)
+    {
+        double sin_val = floor(cases[i].a);
+        printf("%f,%llx\n", sin_val, asuint64(sin_val));
+    }
+
     fclose(fp);
     // free(sin_cal);
     return 0;

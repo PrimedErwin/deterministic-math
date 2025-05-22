@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "features/features.h"
+#include <features.h>
 
 #if defined(_WIN32) || defined(_WIN64)
 #if defined _M_IX86 && _M_IX86_FP < 2 && !defined _M_FP_FAST

@@ -2,8 +2,8 @@
 #define _LIBM_H
 
 #include <stdint.h>
-#include "float.h"
-#include "math.h"
+#include <float.h>
+#include <math.h>
 
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024

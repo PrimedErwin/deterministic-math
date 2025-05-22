@@ -5,8 +5,6 @@
 extern "C" {
 #endif
 
-int __flt_rounds(void);
-#define FLT_ROUNDS (__flt_rounds())
 
 #define FLT_RADIX 2
 
@@ -42,8 +40,9 @@ int __flt_rounds(void);
 
 #define LDBL_HAS_SUBNORM 1
 #define LDBL_DECIMAL_DIG DECIMAL_DIG
+#define LDBL_MANT_DIG    DBL_MANT_DIG            
+#define LDBL_MAX_EXP     DBL_MAX_EXP             
 
-#include <bits/float.h>
 
 #ifdef __cplusplus
 }

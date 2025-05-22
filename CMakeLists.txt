@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.8)
 
 project("determinism_test")
 
-include_directories(include)
 file(GLOB_RECURSE SOURCES
     "src/determinism_test.c"
     "src/cases.c"
@@ -14,8 +13,10 @@ file(GLOB_RECURSE SOURCES
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
+target_include_directories(${PROJECT_NAME} PRIVATE include)
+
 if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /Ox /Oi- /wd4244 /wd4723)
+    target_compile_options(${PROJECT_NAME} PRIVATE /Ox /Oi- /wd4244 /wd4723 /wd4146)
     message("MSVC set")
 else()
     target_compile_options(${PROJECT_NAME} PRIVATE -O2 -fexcess-precision=standard -ffp-contract=off)

@@ -59,15 +59,15 @@ for i in range(100000):
     b = random_group(g2)
     cases.append(Case(a, b, op))
 
-a = np.linspace(0, 12345, 10000)
-
+a = np.random.normal(0, 2000, 10000)
+b = np.random.normal(0, 200, 10000)
 # to C struct
 with open('cases.c', 'w') as f:
     f.write('#include "cases.h"\n')
     f.write('\n')
     f.write('struct Case cases[] = {\n')
-    for case in a:
-        f.write(f'    {{ {case}, {0}, \'{0}\' }},\n')
+    for _a, _b in zip(a, b):
+        f.write(f'    {{ {_a}, {_b}, \'{0}\' }},\n')
     f.write('};\n')
     f.write('\n')
     f.write(f'const int CASES_COUNT = {len(cases)};\n')

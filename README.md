@@ -35,6 +35,33 @@ No problem.
 ### MSVC 19.29.30154
 No problem.
 
+| Function        | Example                         | Checked   |
+| --------------- | ------------------------------- | --------- |
+| acos            |                                 | ✅       |
+| asin            |                                 | ✅       |
+| atan            |                                 | ✅       |
+| atan2           |                                 | ✅       |
+| cbrt            |                                 |        |
+| ceil            |                                 |        |
+| cos             |                                 | ✅       |
+| exp             |                                 |        |
+| fabs            |                                 |        |
+| floor           |                                 |        |
+| fmax            |                                 |        |
+| fmin            |                                 |        |
+| fmod            |                                 |        |
+| log             |                                 |        |
+| log10           |                                 |        |
+| log2            |                                 |        |
+| modf            |                                 |        |
+| pow             |                                 |        |
+| scalbn          |                                 |        |
+| sin             |                                 | ✅       |
+| sqrt            |                                 |        |
+| tan             |                                 | ✅       |
+| trunc           |                                 |        |
+
+
 ### Other platform test
 Except for windows, CI in [Github Actions](https://github.com/PrimedErwin/deterministic-math/actions) tests this repo on:
 

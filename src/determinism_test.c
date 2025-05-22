@@ -44,7 +44,7 @@ int main()
     FILE* fp = freopen("case_result.txt", "w", stdout);
     for(int i=0;i<TEST_TIME;i++)
     {
-        double sin_val = trunc(cases[i].a);
+        double sin_val = log(cases[i].a);
         printf("%f,%llx\n", sin_val, asuint64(sin_val));
         // volatile float x = (float)ref_ans[i];
         // volatile float y = x;
@@ -52,7 +52,12 @@ int main()
     }
     for(int i=0;i<TEST_TIME;i++)
     {
-        double sin_val = exp(cases[i].a);
+        double sin_val = log10(cases[i].a);
+        printf("%f,%llx\n", sin_val, asuint64(sin_val));
+    }
+    for(int i=0;i<TEST_TIME;i++)
+    {
+        double sin_val = log2(cases[i].a);
         printf("%f,%llx\n", sin_val, asuint64(sin_val));
     }
     fclose(fp);

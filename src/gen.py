@@ -59,7 +59,7 @@ for i in range(100000):
     b = random_group(g2)
     cases.append(Case(a, b, op))
 
-a = np.random.normal(0, 10, 10000)
+a = np.linspace(0, 12345, 10000)
 
 # to C struct
 with open('cases.c', 'w') as f:

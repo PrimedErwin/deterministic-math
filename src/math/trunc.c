@@ -10,7 +10,7 @@ double trunc(double x)
 		return x;
 	if (e < 12)
 		e = 1;
-	m = ULLONG_NSHIFT >> e;
+	m = -1ULL >> e;
 	if ((u.i & m) == 0)
 		return x;
 	FORCE_EVAL(x + 0x1p120f);

@@ -39,8 +39,6 @@ typedef double double_t;
 
 #define FP_ILOGBNAN (-1-0x7fffffff)
 #define FP_ILOGB0 FP_ILOGBNAN
-#define ULLONG_NSHIFT 0xFFFFFFFFFFFFFFFF
-#define ULLONG_SHIFT1 0x7FFFFFFFFFFFFFFF
 
 #define FP_NAN       0
 #define FP_INFINITE  1
@@ -86,22 +84,22 @@ static __inline unsigned long long __DOUBLE_BITS(double __f)
 
 #define isinf(x) ( \
 	sizeof(x) == sizeof(float) ? (__FLOAT_BITS(x) & 0x7fffffff) == 0x7f800000 : \
-	sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & ULLONG_SHIFT1) == 0x7ffULL<<52 : \
+	sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & -1ULL>>1) == 0x7ffULL<<52 : \
 	__fpclassifyl(x) == FP_INFINITE)
 
 #define isnan(x) ( \
 	sizeof(x) == sizeof(float) ? (__FLOAT_BITS(x) & 0x7fffffff) > 0x7f800000 : \
-	sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & ULLONG_SHIFT1) > 0x7ffULL<<52 : \
+	sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & -1ULL>>1) > 0x7ffULL<<52 : \
 	__fpclassifyl(x) == FP_NAN)
 
 #define isnormal(x) ( \
 	sizeof(x) == sizeof(float) ? ((__FLOAT_BITS(x)+0x00800000) & 0x7fffffff) >= 0x01000000 : \
-	sizeof(x) == sizeof(double) ? ((__DOUBLE_BITS(x)+(1ULL<<52)) & ULLONG_SHIFT1) >= 1ULL<<53 : \
+	sizeof(x) == sizeof(double) ? ((__DOUBLE_BITS(x)+(1ULL<<52)) & -1ULL>>1) >= 1ULL<<53 : \
 	__fpclassifyl(x) == FP_NORMAL)
 
 #define isfinite(x) ( \
 	sizeof(x) == sizeof(float) ? (__FLOAT_BITS(x) & 0x7fffffff) < 0x7f800000 : \
-	sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & ULLONG_SHIFT1) < 0x7ffULL<<52 : \
+	sizeof(x) == sizeof(double) ? (__DOUBLE_BITS(x) & -1ULL>>1) < 0x7ffULL<<52 : \
 	__fpclassifyl(x) > FP_INFINITE)
 
 int __signbit(double);

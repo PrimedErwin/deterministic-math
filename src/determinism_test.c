@@ -44,21 +44,13 @@ int main()
     FILE* fp = freopen("case_result.txt", "w", stdout);
     for(int i=0;i<TEST_TIME;i++)
     {
-        double sin_val = fmod(cases[i].a, cases[i].b);
+        double pow_a = cases[i].a, pow_b = cases[i].b;
+        if(pow_a < 0) pow_b = ceil(pow_b);
+        double sin_val = pow(pow_a, pow_b);
         printf("%f,%llx\n", sin_val, asuint64(sin_val));
         // volatile float x = (float)ref_ans[i];
         // volatile float y = x;
         // printf("%e,%x\n", y, asuint(y));
-    }
-    for(int i=0;i<TEST_TIME;i++)
-    {
-        double sin_val = fmax(cases[i].a, cases[i].b);
-        printf("%f,%llx\n", sin_val, asuint64(sin_val));
-    }
-    for(int i=0;i<TEST_TIME;i++)
-    {
-        double sin_val = fmin(cases[i].a, cases[i].b);
-        printf("%f,%llx\n", sin_val, asuint64(sin_val));
     }
     fclose(fp);
     // free(sin_cal);

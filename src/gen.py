@@ -59,8 +59,8 @@ for i in range(100000):
     b = random_group(g2)
     cases.append(Case(a, b, op))
 
-a = np.random.normal(0, 2000, 10000)
-b = np.random.normal(0, 200, 10000)
+a = np.random.normal(0, 5, 10000)
+b = np.random.normal(0, 5, 10000)
 # to C struct
 with open('cases.c', 'w') as f:
     f.write('#include "cases.h"\n')

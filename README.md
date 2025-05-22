@@ -41,25 +41,25 @@ No problem.
 | asin            |                                 | ✅       |
 | atan            |                                 | ✅       |
 | atan2           |                                 | ✅       |
-| cbrt            |                                 |        |
-| ceil            |                                 |        |
+| cbrt            |                                 | ✅       |
+| ceil            |                                 | ✅       |
 | cos             |                                 | ✅       |
-| exp             |                                 |        |
-| fabs            |                                 |        |
-| floor           |                                 |        |
-| fmax            |                                 |        |
-| fmin            |                                 |        |
-| fmod            |                                 |        |
-| log             |                                 |        |
-| log10           |                                 |        |
-| log2            |                                 |        |
-| modf            |                                 |        |
-| pow             |                                 |        |
-| scalbn          |                                 |        |
+| exp             |                                 | ✅       |
+| fabs            |                                 | ✅       |
+| floor           |                                 | ✅       |
+| fmax            |                                 | ✅       |
+| fmin            |                                 | ✅       |
+| fmod            |                                 | ✅       |
+| log             |                                 | ✅       |
+| log10           |                                 | ✅       |
+| log2            |                                 | ✅       |
+| modf            |                                 | ✅       |
+| pow             |                                 | ✅       |
+| scalbn          |                                 | ✅       |
 | sin             |                                 | ✅       |
-| sqrt            |                                 |        |
+| sqrt            |                                 | ✅       |
 | tan             |                                 | ✅       |
-| trunc           |                                 |        |
+| trunc           |                                 | ✅       |
 
 
 ### Other platform test
